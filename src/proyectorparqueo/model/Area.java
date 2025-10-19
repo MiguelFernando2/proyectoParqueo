@@ -9,7 +9,8 @@ package proyectorparqueo.model;
  * @author DIEGO
  */
 public class Area {
-    // Atributos
+    
+    // Atributoss
     public String id;
     public String nombre;
     public int capacidad;
