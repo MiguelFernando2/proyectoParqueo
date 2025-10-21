@@ -11,14 +11,15 @@ package proyectorparqueo.model;
 public class vehiculo {
     public String placa;
     public String propietario;
-    public String categoria;
+
+    public String tipoVehiculo;
     public String tipoPlan;
     public boolean planActivo;
 
-    public vehiculo(String placa, String propietario, String categoria, String tipoPlan, boolean planActivo) {
+    public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo) {
         this.placa = placa;
         this.propietario = propietario;
-        this.categoria = categoria;
+        this.tipoVehiculo = tipoVehiculo;
         this.tipoPlan = tipoPlan;
         this.planActivo = planActivo;
     }
@@ -28,8 +29,8 @@ public class vehiculo {
     public String getPropietario() {
         return propietario;
     }
-    public String getCategoria() {
-        return categoria;
+    public String getTipoVehiculo(){
+        return tipoVehiculo;
     }
     public String getTipoPlan() {
         return tipoPlan;
@@ -44,8 +45,8 @@ public class vehiculo {
     public void setPropietario(String propietario) {
         this.propietario = propietario;
     }
-    public void setCategoria(String categoria) {
-        this.categoria = categoria;
+    public void setTipoVehiculo(String tipoVehiculo){
+        this.tipoVehiculo = tipoVehiculo;
     }
     public void setTipoPlan(String tipoPlan) {
         this.tipoPlan = tipoPlan;
@@ -64,7 +65,7 @@ public class vehiculo {
     public void mostrarDatos(){
         System.out.println("Placa: " + placa);
         System.out.println("Propietario:" + propietario);
-        System.out.println("Categoria: " + categoria);
+        System.out.println("Tipo de vehicula: " + tipoVehiculo);
         System.out.println("Tipo de PLan: " + tipoPlan);
         System.out.println("Plan Activo: " + planActivo);
     }
