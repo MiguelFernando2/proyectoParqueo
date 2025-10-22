@@ -135,9 +135,19 @@ public class FrmIngreso extends javax.swing.JFrame {
 
         btnCargarCSV.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnCargarCSV.setText("CARGAR CSV");
+        btnCargarCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarCSVActionPerformed(evt);
+            }
+        });
 
         btnGuardarCSV.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnGuardarCSV.setText("GUARDAR CSV");
+        btnGuardarCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarCSVActionPerformed(evt);
+            }
+        });
 
         txtArea.setColumns(20);
         txtArea.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
@@ -230,6 +240,72 @@ public class FrmIngreso extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
+    private void btnGuardarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCSVActionPerformed
+
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        fileChooser.setDialogTitle("Guardar Archivo CSV. ");
+        
+        int seleccion = fileChooser.showSaveDialog(this);
+        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION){
+        java.io.File archivo = fileChooser.getSelectedFile();
+        
+        try {
+            parqueo.guardarCSV(archivo.getAbsolutePath());
+            
+            javax.swing.JOptionPane.showMessageDialog(this, "Archivo Guardado Correctamente en: \n"
+            + archivo.getAbsolutePath());
+        } catch (Exception e) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al Guardar: " + e.getMessage());
+        }
+        }
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGuardarCSVActionPerformed
+
+    private void btnCargarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCSVActionPerformed
+
+        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
+        
+        fileChooser.setDialogTitle("Seleccionar archivo CSV. ");
+        
+        fileChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
+        
+        int seleccion = fileChooser.showOpenDialog(this);
+        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION){
+            java.io.File carpeta = fileChooser.getSelectedFile();
+            java.util.List<java.io.File>listArchivos = new java.util.ArrayList<>();
+            
+            //Buscar recuersivamente las carpeyas
+            buscarArchivosCSV(carpeta, listArchivos);
+            if (!listArchivos.isEmpty()){
+                txtArea.setText("");
+                
+                int cargados = 0;
+                for (java.io.File archivo : listArchivos){
+                    try {
+                        txtArea.append("\n===Archivo: " + archivo.getName() + "===\n " );
+                        
+                        parqueo.cargarCSV(archivo.getAbsolutePath());
+                        cargados ++;
+                    } catch (Exception e){
+                        javax.swing.JOptionPane.showMessageDialog(this, "Error al leer " + archivo.getName());
+                    }
+                } 
+                for (vehiculo v : parqueo.getVehiculos()){
+                    txtArea.append(String.format("Placa: %-10s | Propietario: %-20s | Tipo: %-10s | Plan: %-15s%n", 
+                            v.getPlaca(),
+                            v.getPropietario(),
+                            v.getTipoVehiculo(),
+                            v.getTipoPlan()));
+                }
+                javax.swing.JOptionPane.showMessageDialog(this, "Carga completada.\nSe cargaron " + cargados + "Archivos CSV correctamente. ");
+            }else {
+                javax.swing.JOptionPane.showMessageDialog(this, "No se encontraron archivos CSV en esta carpeta ni subcarpeta");
+            }
+        }
+            
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCargarCSVActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -283,4 +359,20 @@ public class FrmIngreso extends javax.swing.JFrame {
     private javax.swing.JTextField txtPlaca;
     private javax.swing.JTextField txtPropietario;
     // End of variables declaration//GEN-END:variables
+
+private void buscarArchivosCSV(java.io.File carpeta, java.util.List<java.io.File> listaArchivos) {
+    java.io.File[] archivos = carpeta.listFiles();
+    if (archivos != null) {
+        for (java.io.File archivo : archivos) {
+            if (archivo.isDirectory()) {
+                //  Busca recursivamente en las subcarpetas
+                buscarArchivosCSV(archivo, listaArchivos);
+            } else if (archivo.getName().toLowerCase().endsWith(".csv")) {
+                //  Agrega solo los archivos .csv encontrados
+                listaArchivos.add(archivo);
+            }
+        }
+    }
 }
+}
+

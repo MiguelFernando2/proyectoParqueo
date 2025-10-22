@@ -55,21 +55,33 @@ public class controlParqueo {
                     e.printStackTrace();
                 }
             }
-        public void cargarCSV(String nombreArchivo){
-            vehiculos.clear();
+        public void cargarCSV(String nombreArchivo) throws IOException {
+            
             try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))){
                 String linea;
+                boolean primera = true;
+                
                 while ((linea = br.readLine())!=null){
-                    
+                    if (primera){
+                        primera = false;
+                        continue;
+                    }
                 String[] datos = linea.split(",");
-                if (datos.length == 4){
-                    vehiculo v = new vehiculo(datos[0], datos[1], datos[2], datos[3], true);
+                if (datos.length >= 4){
+                    vehiculo v = new vehiculo(datos[0].trim(), datos[1].trim(), datos[2].trim(), datos[3].trim(), true);
                     vehiculos.add(v);
                 }
             }
-                System.out.println("Archivo CSV cargado correctamente. ");
-            } catch (IOException e){
-                e.printStackTrace();
+                
             }
+            
+            
+        }
+        
+        public ArrayList<vehiculo> getVehiculos(){
+            return vehiculos;
+        }
+        public void limpiar(){
+            vehiculos.clear();
         }
     }    
