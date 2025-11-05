@@ -4,6 +4,8 @@
  */
 package proyectorparqueo.model;
 
+import java.time.LocalDateTime;
+
 /**
  *
  * @author DIEGO
@@ -11,10 +13,11 @@ package proyectorparqueo.model;
 public class vehiculo {
     public String placa;
     public String propietario;
-
     public String tipoVehiculo;
     public String tipoPlan;
     public boolean planActivo;
+    
+    private LocalDateTime horaIngreso;
 
     public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo) {
         this.placa = placa;
@@ -22,6 +25,8 @@ public class vehiculo {
         this.tipoVehiculo = tipoVehiculo;
         this.tipoPlan = tipoPlan;
         this.planActivo = planActivo;
+        
+        this.horaIngreso = LocalDateTime.now();
     }
     public String getPlaca() {
         return placa;
@@ -38,6 +43,9 @@ public class vehiculo {
     public boolean isPlanActivo() {
         return planActivo;
     }
+    public LocalDateTime getHoraIngreso(){
+        return horaIngreso;
+    }
 
     public void setPlaca(String placa) {
         this.placa = placa;
@@ -53,6 +61,9 @@ public class vehiculo {
     }
     public void setPlanActivo(boolean planActivo) {
         this.planActivo = planActivo;
+    }
+    public void setHoraIngreso(LocalDateTime h){
+        this.horaIngreso = h;
     }
     
     public void cancelarPlan(){

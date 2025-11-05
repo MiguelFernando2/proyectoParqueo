@@ -4,6 +4,10 @@
  */
 package proyectoparqueo.ui;
 
+import proyectorparqueo.model.DatosApp;
+import proyectorparqueo.model.vehiculo;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author DIEGO
@@ -26,21 +30,146 @@ public class FrmSalida extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTitulo = new javax.swing.JLabel();
+        lblPlaca = new javax.swing.JLabel();
+        txtPlaca = new javax.swing.JTextField();
+        btnBuscar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtArea = new javax.swing.JTextArea();
+        btnRegistrarSalida = new javax.swing.JButton();
+        btnLimpiar = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblTitulo.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
+        lblTitulo.setText("^_^ SALIDA DE VEHICULO");
+
+        lblPlaca.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        lblPlaca.setText("        PLACA:");
+
+        txtPlaca.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        txtPlaca.setText("PARA INGRESAR PLACA");
+
+        btnBuscar.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        btnBuscar.setText("BUSCAR");
+        btnBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarActionPerformed(evt);
+            }
+        });
+
+        txtArea.setColumns(20);
+        txtArea.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        txtArea.setRows(5);
+        txtArea.setText("para mostrar los datos del vehiculo");
+        jScrollPane1.setViewportView(txtArea);
+
+        btnRegistrarSalida.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        btnRegistrarSalida.setText("REGISTRAR SALIDA");
+        btnRegistrarSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarSalidaActionPerformed(evt);
+            }
+        });
+
+        btnLimpiar.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        btnLimpiar.setText("LIMPIAR");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                            .addGap(93, 93, 93)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(lblPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 309, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGroup(layout.createSequentialGroup()
+                            .addContainerGap()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 466, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(btnRegistrarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(39, 39, 39)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtPlaca, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(12, 12, 12)
+                .addComponent(btnBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegistrarSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnLimpiar, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+        String placa = txtPlaca.getText().trim();
+        if (placa.isEmpty()){
+            javax.swing.JOptionPane.showMessageDialog(this, "INGRESA UNA PLACA. ");
+            return;
+        }
+        vehiculo v = DatosApp.PARQUEO.buscarPorPlaca(placa);
+        if (v == null){
+            javax.swing.JOptionPane.showMessageDialog(this , "NO SE ENCONTRO LA PLACA. ");
+            txtArea.setText("");
+            return;
+        }
+        
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        txtArea.setText(String.format("PLACA: %s%nPROPIETARIO: &s%TIPO VEHICULO: %s%nPLAN: %s%nINGRESO: %s",
+                v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(), v.getHoraIngreso().format(f)));
+        
+// TODO 
+    }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
+    private void btnRegistrarSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarSalidaActionPerformed
+
+        String placa = txtPlaca.getText().trim();
+        if (placa.isEmpty()){
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingresa una placa. ");
+            return;
+        }
+        // CALCULA Y REMUEVE
+        double total = DatosApp.PARQUEO.registrarSalida(placa);
+        if (total<0){
+            javax.swing.JOptionPane.showMessageDialog(this, "No se encontro la placa. ");
+            return;
+        }
+        txtArea.append(String.format("%n%nTOTAL A PAGAR: Q%.2f", total));
+        
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegistrarSalidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +207,13 @@ public class FrmSalida extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnBuscar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JButton btnRegistrarSalida;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPlaca;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JTextArea txtArea;
+    private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
 }

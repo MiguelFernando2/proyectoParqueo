@@ -4,6 +4,7 @@
  */
 package proyectoparqueo.ui;
 
+import proyectorparqueo.model.DatosApp;
 import javax.swing.JOptionPane;
 import proyectorparqueo.model.controlParqueo;
 import proyectorparqueo.model.vehiculo;
@@ -14,7 +15,6 @@ import proyectorparqueo.model.vehiculo;
 
 public class FrmIngreso extends javax.swing.JFrame {
     
-    controlParqueo parqueo = new controlParqueo();
     /**
      * Creates new form FrmIngreso
      */
@@ -225,7 +225,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         
         vehiculo v = new vehiculo (placa, propietario, tipoVehiculo, tipoPlan, true);
         
-        parqueo.registrarVehiculo(v);
+        DatosApp.PARQUEO.registrarVehiculo(v);
         
         JOptionPane.showMessageDialog(this, "Vehiculo registrado correctamente. ");
         
@@ -250,7 +250,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         java.io.File archivo = fileChooser.getSelectedFile();
         
         try {
-            parqueo.guardarCSV(archivo.getAbsolutePath());
+            DatosApp.PARQUEO.guardarCSV(archivo.getAbsolutePath());
             
             javax.swing.JOptionPane.showMessageDialog(this, "Archivo Guardado Correctamente en: \n"
             + archivo.getAbsolutePath());
@@ -284,13 +284,13 @@ public class FrmIngreso extends javax.swing.JFrame {
                     try {
                         txtArea.append("\n===Archivo: " + archivo.getName() + "===\n " );
                         
-                        parqueo.cargarCSV(archivo.getAbsolutePath());
+                        DatosApp.PARQUEO.cargarCSV(archivo.getAbsolutePath());
                         cargados ++;
                     } catch (Exception e){
                         javax.swing.JOptionPane.showMessageDialog(this, "Error al leer " + archivo.getName());
                     }
                 } 
-                for (vehiculo v : parqueo.getVehiculos()){
+                for (vehiculo v : DatosApp.PARQUEO.getVehiculos()){
                     txtArea.append(String.format("Placa: %-10s | Propietario: %-20s | Tipo: %-10s | Plan: %-15s%n", 
                             v.getPlaca(),
                             v.getPropietario(),
