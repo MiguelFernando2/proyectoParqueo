@@ -9,6 +9,7 @@ package proyectorparqueo.model;
  * @author DIEGO
  */
 public class pruebaControlParqueo {
+    /*
     public static void main(String[] args) {
         controlParqueo control = new controlParqueo();
         
@@ -21,5 +22,5 @@ public class pruebaControlParqueo {
         System.out.println("\nLista de vehiculos registrados:");
         control.mostrarVehiculos();
     }
-    
+    */
 }

@@ -12,6 +12,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import proyectorparqueo.model.vehiculo;
 
 /**
  *
@@ -61,7 +62,7 @@ public class controlParqueo {
         String plan = v.getTipoPlan().toUpperCase(); // VARIABLE O FLAT
         String tipo = v.getTipoVehiculo().toUpperCase(); // CARRO P MOTO
         
-        if (plan.contains("VARIABLE ")){ // redondeo por arriba a la hora siguiente
+        if (plan.toUpperCase().contains("VARIABLE")){ // redondeo por arriba a la hora siguiente
             long minutos = Duration.between(v.getHoraIngreso(), horaSalida).toMinutes();
             long horasRedondeadas = (minutos + 59) / 60; 
             double tarifaHora = tipo.contains("MOTO") ? HORA_MOTO : HORA_CARRO;
@@ -105,38 +106,67 @@ public class controlParqueo {
     //////////////////////
     
     public void guardarCSV(String nombreArchivo) {
-        try (PrintWriter writer = new PrintWriter(new FileWriter(nombreArchivo))){
-            for (vehiculo v : vehiculos){
-                writer.println(v.getPlaca()+ "," 
-                       + v.getPropietario()+ ","
-                + v.getTipoVehiculo() + ","
-                + v.getTipoPlan());
+        java.io.File archivo = new java.io.File(nombreArchivo);
+        
+        boolean escribirHeader = !archivo.exists() || archivo.length() == 0;
+
+    try (java.io.PrintWriter pw = new java.io.PrintWriter(
+            new java.io.BufferedWriter(new java.io.FileWriter(archivo, true)))) {
+
+        if (escribirHeader) {
+            pw.println("Placa,Propietario,Tipo,Plan,Area,FechaIngreso");
+        }
+
+        for (vehiculo v : getVehiculos()) {   // o this.vehiculos si no tienes getter
+            pw.printf("%s,%s,%s,%s,%s,%s%n",
+                    v.getPlaca(),
+                    v.getPropietario(),
+                    v.getTipoVehiculo(),
+                    v.getTipoPlan(),
+                    v.getArea(),
+                    v.getHoraIngreso().toString());
+        }
+    } catch (Exception e) {
+        throw new RuntimeException("Error al guardar CSV: " + e.getMessage(), e);
+    }
             }
-                System.out.println("ARCHIVO SCV GUARDADO CORRECTAMENTE. ");
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
+    
+    public void cargarCSV(String nombreArchivo) throws IOException {
+        try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
+        String linea;
+        boolean primera = true;
+
+        while ((linea = br.readLine()) != null) {
+            if (primera) {
+                primera = false;
+                // si la primera línea parece encabezado, saltarla
+                if (linea.toLowerCase().contains("placa")) continue;
             }
-        public void cargarCSV(String nombreArchivo) throws IOException {
-            
-            try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))){
-                String linea;
-                boolean primera = true;
-                
-                while ((linea = br.readLine())!=null){
-                    if (primera){
-                        primera = false;
-                        continue;
-                    }
-                String[] datos = linea.split(",");
-                if (datos.length >= 4){
-                    vehiculo v = new vehiculo(datos[0].trim(), datos[1].trim(), datos[2].trim(), datos[3].trim(), true);
+            if (linea.trim().isEmpty()) continue;
+
+            String[] datos = linea.split(",");
+            for (int i = 0; i < datos.length; i++) datos[i] = datos[i].trim();
+
+            // CSV mínimo esperado: 4 columnas (placa, propietario, tipo, plan)
+            if (datos.length >= 4) {
+                String placa = datos[0];
+                String propietario = datos[1];
+                String tipo = datos[2];
+                String plan = datos[3];
+
+                if (datos.length >= 5) {
+                    // tiene área
+                    String area = datos[4].isEmpty() ? "ESTUDIANTES" : datos[4];
+                    vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, area);
+                    vehiculos.add(v);
+                } else {
+                    // sin área -> usa constructor antiguo
+                    vehiculo v = new vehiculo(placa, propietario, tipo, plan, true);
                     vehiculos.add(v);
                 }
             }
-                
-            }
-            
+        }
+    }
             
         }
         

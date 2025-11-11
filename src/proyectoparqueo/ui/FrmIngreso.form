@@ -24,7 +24,7 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace pref="63" max="32767" attributes="0"/>
+              <EmptySpace pref="36" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="1" max="-2" attributes="0">
                   <Component id="jPanel2" alignment="0" max="32767" attributes="0"/>
                   <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
@@ -54,28 +54,22 @@
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace max="32767" attributes="0"/>
-                          <Component id="btnRegistrar" min="-2" pref="215" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" attributes="0">
-                          <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="lblTipo" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblPropietario" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblPlaca" alignment="0" max="32767" attributes="0"/>
-                              <Component id="lblPlan" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="txtPropietario" max="32767" attributes="0"/>
-                              <Component id="txtPlaca" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cmbTipo" alignment="0" max="32767" attributes="0"/>
-                              <Component id="cmbPlan" alignment="0" max="32767" attributes="0"/>
-                          </Group>
-                      </Group>
+              <Group type="102" alignment="0" attributes="0">
+                  <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Component id="lblArea" max="32767" attributes="0"/>
+                      <Component id="lblTipo" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblPropietario" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblPlaca" alignment="0" max="32767" attributes="0"/>
+                      <Component id="lblPlan" alignment="0" max="32767" attributes="0"/>
+                  </Group>
+                  <EmptySpace min="-2" pref="50" max="-2" attributes="0"/>
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Component id="txtPropietario" max="32767" attributes="0"/>
+                      <Component id="txtPlaca" alignment="0" max="32767" attributes="0"/>
+                      <Component id="cmbTipo" alignment="0" max="32767" attributes="0"/>
+                      <Component id="cmbPlan" alignment="0" pref="322" max="32767" attributes="0"/>
+                      <Component id="cmbRol" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace min="19" pref="19" max="-2" attributes="0"/>
               </Group>
@@ -105,8 +99,11 @@
                       <Component id="lblPlan" alignment="3" min="-2" pref="30" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                  <Component id="btnRegistrar" min="-2" pref="33" max="-2" attributes="0"/>
-                  <EmptySpace pref="9" max="32767" attributes="0"/>
+                  <Group type="103" groupAlignment="3" attributes="0">
+                      <Component id="lblArea" alignment="3" min="-2" pref="26" max="-2" attributes="0"/>
+                      <Component id="cmbRol" alignment="3" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace pref="16" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -195,16 +192,32 @@
             <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
           </AuxValues>
         </Component>
-        <Component class="javax.swing.JButton" name="btnRegistrar">
+        <Component class="javax.swing.JLabel" name="lblArea">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI Black" size="14" style="0"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="REGISTRAR VEHICULO"/>
+            <Property name="text" type="java.lang.String" value="ROL"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JComboBox" name="cmbRol">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI Black" size="14" style="0"/>
+            </Property>
+            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+              <StringArray count="2">
+                <StringItem index="0" value="ESTUDIANTE"/>
+                <StringItem index="1" value="CATEDRATICO"/>
+              </StringArray>
+            </Property>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cmbRolActionPerformed"/>
           </Events>
+          <AuxValues>
+            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+          </AuxValues>
         </Component>
       </SubComponents>
     </Container>
@@ -221,6 +234,8 @@
                           <Component id="btnCargarCSV" min="-2" pref="142" max="-2" attributes="0"/>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Component id="btnGuardarCSV" min="-2" pref="139" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="btnRegistrar" min="-2" pref="215" max="-2" attributes="0"/>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                       </Group>
                   </Group>
@@ -235,6 +250,7 @@
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="btnGuardarCSV" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                       <Component id="btnCargarCSV" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
+                      <Component id="btnRegistrar" alignment="3" min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jScrollPane1" min="-2" pref="175" max="-2" attributes="0"/>
@@ -284,6 +300,17 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JButton" name="btnRegistrar">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Segoe UI Black" size="14" style="0"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="REGISTRAR VEHICULO"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarActionPerformed"/>
+          </Events>
+        </Component>
       </SubComponents>
     </Container>
     <Component class="javax.swing.JLabel" name="lblTitulo">

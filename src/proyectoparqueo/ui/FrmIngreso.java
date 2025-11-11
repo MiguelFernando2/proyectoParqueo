@@ -40,12 +40,14 @@ public class FrmIngreso extends javax.swing.JFrame {
         cmbTipo = new javax.swing.JComboBox<>();
         lblPlan = new javax.swing.JLabel();
         cmbPlan = new javax.swing.JComboBox<>();
-        btnRegistrar = new javax.swing.JButton();
+        lblArea = new javax.swing.JLabel();
+        cmbRol = new javax.swing.JComboBox<>();
         jPanel2 = new javax.swing.JPanel();
         btnCargarCSV = new javax.swing.JButton();
         btnGuardarCSV = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtArea = new javax.swing.JTextArea();
+        btnRegistrar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -77,11 +79,14 @@ public class FrmIngreso extends javax.swing.JFrame {
         cmbPlan.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         cmbPlan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "PLAN (FLAT)", "TARIFA VARIABLE" }));
 
-        btnRegistrar.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        btnRegistrar.setText("REGISTRAR VEHICULO");
-        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+        lblArea.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        lblArea.setText("ROL");
+
+        cmbRol.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ESTUDIANTE", "CATEDRATICO" }));
+        cmbRol.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarActionPerformed(evt);
+                cmbRolActionPerformed(evt);
             }
         });
 
@@ -89,24 +94,21 @@ public class FrmIngreso extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(32, 32, 32)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblTipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPropietario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(lblPlan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(50, 50, 50)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPropietario)
-                            .addComponent(txtPlaca)
-                            .addComponent(cmbTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(cmbPlan, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblArea, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblTipo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPropietario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPlaca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblPlan, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(50, 50, 50)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtPropietario)
+                    .addComponent(txtPlaca)
+                    .addComponent(cmbTipo, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(cmbPlan, 0, 322, Short.MAX_VALUE)
+                    .addComponent(cmbRol, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(19, 19, 19))
         );
         jPanel1Layout.setVerticalGroup(
@@ -129,8 +131,10 @@ public class FrmIngreso extends javax.swing.JFrame {
                     .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblArea, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(16, Short.MAX_VALUE))
         );
 
         btnCargarCSV.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
@@ -154,6 +158,14 @@ public class FrmIngreso extends javax.swing.JFrame {
         txtArea.setRows(5);
         jScrollPane1.setViewportView(txtArea);
 
+        btnRegistrar.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
+        btnRegistrar.setText("REGISTRAR VEHICULO");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -166,6 +178,8 @@ public class FrmIngreso extends javax.swing.JFrame {
                         .addComponent(btnCargarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(btnGuardarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -175,7 +189,8 @@ public class FrmIngreso extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCargarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnCargarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(18, Short.MAX_VALUE))
@@ -189,7 +204,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(63, Short.MAX_VALUE)
+                .addContainerGap(36, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -217,47 +232,61 @@ public class FrmIngreso extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbTipoActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+ 
+    String placa       = txtPlaca.getText().trim();
+    String propietario = txtPropietario.getText().trim();
+    String tipo        = cmbTipo.getSelectedItem().toString();   // "MOTO" o "CARRO"
+    String plan        = cmbPlan.getSelectedItem().toString();   // "PLAN (FLAT)" o "TARIFA VARIABLE"
+    String rol         = cmbRol.getSelectedItem().toString();    // "ESTUDIANTE" o "CATEDRATICO"
 
-        String placa = txtPlaca.getText();
-        String propietario = txtPropietario.getText();
-        String tipoVehiculo = cmbTipo.getSelectedItem().toString();
-        String tipoPlan = cmbPlan.getSelectedItem().toString();
-        
-        vehiculo v = new vehiculo (placa, propietario, tipoVehiculo, tipoPlan, true);
-        
-        DatosApp.PARQUEO.registrarVehiculo(v);
-        
-        JOptionPane.showMessageDialog(this, "Vehiculo registrado correctamente. ");
-        
-        txtArea.append(String.format("Placa: %-10s | Propietario: %-20s | Tipo: %-10s | Plan: %-15s%n", 
-                placa, propietario, tipoVehiculo, tipoPlan));
-        
-        txtPlaca.setText("");
-        txtPropietario.setText("");
-        cmbTipo.setSelectedIndex(0);
-        cmbPlan.setSelectedIndex(0);
-        
-        // TODO add your handling code here:
+    if (placa.isEmpty() || propietario.isEmpty()){
+        javax.swing.JOptionPane.showMessageDialog(this, "Complete placa y propietario.");
+        return;
+    }
+
+    // 1) Decidir ÁREA automáticamente
+    String area;
+    if (tipo.equalsIgnoreCase("MOTO")) {
+        area = "MOTOS";
+    } else {
+        area = rol.equalsIgnoreCase("ESTUDIANTE") ? "ESTUDIANTES" : "CATEDRATICOS";
+    }
+
+    // 2) Crear el vehículo (usa tu constructor vigente)
+    // Opción A: si tu constructor NO recibe área:
+    vehiculo v = new vehiculo(placa, propietario, tipo, plan, true);
+    v.setArea(area);  // guardar el área asignada
+
+    // (Si tu constructor sí recibe área, puedes usar:)
+    // vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, area);
+
+    // 3) Registrar en el parqueo
+    proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
+
+    // 4) Feedback en pantalla (tu textarea/tabla)
+    txtArea.append(String.format("Placa: %s | Prop: %s | Tipo: %s | Plan: %s | Área: %s | Ingreso: %s%n",
+            v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(),
+            v.getArea(), v.getHoraIngreso().toString()));
+
+    javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente en área: " + area);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnGuardarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCSVActionPerformed
 
         javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-        fileChooser.setDialogTitle("Guardar Archivo CSV. ");
-        
+        fileChooser.setDialogTitle("Guardar Archivo CSV.");
+
         int seleccion = fileChooser.showSaveDialog(this);
-        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION){
+        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION) {
         java.io.File archivo = fileChooser.getSelectedFile();
-        
         try {
-            DatosApp.PARQUEO.guardarCSV(archivo.getAbsolutePath());
-            
-            javax.swing.JOptionPane.showMessageDialog(this, "Archivo Guardado Correctamente en: \n"
-            + archivo.getAbsolutePath());
+            proyectorparqueo.model.DatosApp.PARQUEO.guardarCSV(archivo.getAbsolutePath());
+            javax.swing.JOptionPane.showMessageDialog(this,
+                "Archivo guardado correctamente en:\n" + archivo.getAbsolutePath());
         } catch (Exception e) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error al Guardar: " + e.getMessage());
+            javax.swing.JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage());
         }
-        }
+    }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnGuardarCSVActionPerformed
 
@@ -290,12 +319,19 @@ public class FrmIngreso extends javax.swing.JFrame {
                         javax.swing.JOptionPane.showMessageDialog(this, "Error al leer " + archivo.getName());
                     }
                 } 
-                for (vehiculo v : DatosApp.PARQUEO.getVehiculos()){
-                    txtArea.append(String.format("Placa: %-10s | Propietario: %-20s | Tipo: %-10s | Plan: %-15s%n", 
+                for (proyectorparqueo.model.vehiculo v : proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos()) {
+                    String area = (v.getArea() == null) ? "" : v.getArea();
+                    String fh   = (v.getHoraIngreso() == null) ? "" : v.getHoraIngreso().toString();
+
+                    txtArea.append(String.format(
+                            "Placa: %-10s | Propietario: %-20s | Tipo: %-10s | Plan: %-15s | Rol: %-15s | Ingreso: %s%n",
                             v.getPlaca(),
                             v.getPropietario(),
                             v.getTipoVehiculo(),
-                            v.getTipoPlan()));
+                            v.getTipoPlan(),
+                            area,
+                            fh
+                    ));
                 }
                 javax.swing.JOptionPane.showMessageDialog(this, "Carga completada.\nSe cargaron " + cargados + "Archivos CSV correctamente. ");
             }else {
@@ -305,6 +341,10 @@ public class FrmIngreso extends javax.swing.JFrame {
             
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCargarCSVActionPerformed
+
+    private void cmbRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbRolActionPerformed
 
     /**
      * @param args the command line arguments
@@ -346,10 +386,12 @@ public class FrmIngreso extends javax.swing.JFrame {
     private javax.swing.JButton btnGuardarCSV;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JComboBox<String> cmbPlan;
+    private javax.swing.JComboBox<String> cmbRol;
     private javax.swing.JComboBox<String> cmbTipo;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblArea;
     private javax.swing.JLabel lblPlaca;
     private javax.swing.JLabel lblPlan;
     private javax.swing.JLabel lblPropietario;

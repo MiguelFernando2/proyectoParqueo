@@ -15,19 +15,33 @@ public class vehiculo {
     public String propietario;
     public String tipoVehiculo;
     public String tipoPlan;
-    public boolean planActivo;
-    
+    public boolean planActivo;   
     private LocalDateTime horaIngreso;
+    public String area;
+    public String rol;
 
     public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo) {
         this.placa = placa;
         this.propietario = propietario;
         this.tipoVehiculo = tipoVehiculo;
         this.tipoPlan = tipoPlan;
-        this.planActivo = planActivo;
-        
+        this.planActivo = planActivo; 
         this.horaIngreso = LocalDateTime.now();
+        this.area = "ESTUDIANTE";
     }
+
+    public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo, String area) {
+        this.placa = placa;
+        this.propietario = propietario;
+        this.tipoVehiculo = tipoVehiculo;
+        this.tipoPlan = tipoPlan;
+        this.planActivo = planActivo;
+        this.horaIngreso = LocalDateTime.now();
+        this.area = (area == null || area.isEmpty()) ? "ESTUDIANTE" : area;
+    }
+    
+    
+    
     public String getPlaca() {
         return placa;
     }
@@ -45,6 +59,12 @@ public class vehiculo {
     }
     public LocalDateTime getHoraIngreso(){
         return horaIngreso;
+    }
+    public String getArea(){
+        return area;
+    }
+    public String rol(){
+        return rol;
     }
 
     public void setPlaca(String placa) {
@@ -65,12 +85,18 @@ public class vehiculo {
     public void setHoraIngreso(LocalDateTime h){
         this.horaIngreso = h;
     }
+    public void setArea(String area){
+        this.area = area;
+    }
+    public void setrol(String rol){
+        this.rol = rol;
+    }
     
     public void cancelarPlan(){
         this.planActivo = false;
     }
     public void reactivarPlan(){
-        this.planActivo = false;
+        this.planActivo = true;
     }
     
     public void mostrarDatos(){
@@ -79,6 +105,8 @@ public class vehiculo {
         System.out.println("Tipo de vehicula: " + tipoVehiculo);
         System.out.println("Tipo de PLan: " + tipoPlan);
         System.out.println("Plan Activo: " + planActivo);
+        //System.out.println("Area: " + area);
+       // System.out.println("Hora ingresado: " + horaIngreso);
     }
     
 }
