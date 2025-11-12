@@ -26,21 +26,66 @@ public class menuPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnAbrirIngreso = new javax.swing.JButton();
+        btnAbrirSalida = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        btnAbrirIngreso.setText("REGISTRAR INGRESO");
+        btnAbrirIngreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirIngresoActionPerformed(evt);
+            }
+        });
+
+        btnAbrirSalida.setText("REGISTRAR SALIDA");
+        btnAbrirSalida.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAbrirSalidaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAbrirSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(786, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(78, 78, 78)
+                .addComponent(btnAbrirIngreso)
+                .addGap(29, 29, 29)
+                .addComponent(btnAbrirSalida)
+                .addContainerGap(369, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnAbrirIngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirIngresoActionPerformed
+
+        FrmIngreso f = new FrmIngreso();
+        f.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        f.setLocationRelativeTo(this);
+        f.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAbrirIngresoActionPerformed
+
+    private void btnAbrirSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirSalidaActionPerformed
+
+        FrmSalida f = new FrmSalida();
+        f.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        f.setLocationRelativeTo(this);
+        f.setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnAbrirSalidaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +123,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAbrirIngreso;
+    private javax.swing.JButton btnAbrirSalida;
     // End of variables declaration//GEN-END:variables
 }
