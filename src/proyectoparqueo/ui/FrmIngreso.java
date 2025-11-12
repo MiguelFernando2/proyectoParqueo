@@ -204,7 +204,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(36, Short.MAX_VALUE)
+                .addContainerGap(55, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -233,42 +233,32 @@ public class FrmIngreso extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
  
-    String placa       = txtPlaca.getText().trim();
-    String propietario = txtPropietario.getText().trim();
-    String tipo        = cmbTipo.getSelectedItem().toString();   // "MOTO" o "CARRO"
-    String plan        = cmbPlan.getSelectedItem().toString();   // "PLAN (FLAT)" o "TARIFA VARIABLE"
-    String rol         = cmbRol.getSelectedItem().toString();    // "ESTUDIANTE" o "CATEDRATICO"
+        String placa = txtPlaca.getText().trim();
+String propietario = txtPropietario.getText().trim();
+String tipo = cmbTipo.getSelectedItem().toString();   // "MOTO" o "CARRO"
+String plan = cmbPlan.getSelectedItem().toString();   // "PLAN (FLAT)" o "TARIFA VARIABLE" (o como lo llames)
+String rol  = cmbRol.getSelectedItem().toString();    // "ESTUDIANTE" o "CATEDRATICO"
 
-    if (placa.isEmpty() || propietario.isEmpty()){
-        javax.swing.JOptionPane.showMessageDialog(this, "Complete placa y propietario.");
-        return;
-    }
+// Reglas de área:
+String area;
+if ("MOTO".equalsIgnoreCase(tipo)) {
+    area = "MOTOS";
+} else {
+    area = "ESTUDIANTE".equalsIgnoreCase(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
+}
 
-    // 1) Decidir ÁREA automáticamente
-    String area;
-    if (tipo.equalsIgnoreCase("MOTO")) {
-        area = "MOTOS";
-    } else {
-        area = rol.equalsIgnoreCase("ESTUDIANTE") ? "ESTUDIANTES" : "CATEDRATICOS";
-    }
+// Crear y registrar
+vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, area);
+proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
 
-    // 2) Crear el vehículo (usa tu constructor vigente)
-    // Opción A: si tu constructor NO recibe área:
-    vehiculo v = new vehiculo(placa, propietario, tipo, plan, true);
-    v.setArea(area);  // guardar el área asignada
+// Mostrar resumen en el textarea
+txtArea.append(String.format(
+        "Placa: %s | Prop: %s | Tipo: %s | Plan: %s | Rol: %s | Área: %s | Ingreso: %s%n",
+        v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(),
+        v.getRol(), v.getArea(), v.getHoraIngreso().toString()
+));
+javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente.");
 
-    // (Si tu constructor sí recibe área, puedes usar:)
-    // vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, area);
-
-    // 3) Registrar en el parqueo
-    proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
-
-    // 4) Feedback en pantalla (tu textarea/tabla)
-    txtArea.append(String.format("Placa: %s | Prop: %s | Tipo: %s | Plan: %s | Área: %s | Ingreso: %s%n",
-            v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(),
-            v.getArea(), v.getHoraIngreso().toString()));
-
-    javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente en área: " + area);
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnGuardarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCSVActionPerformed

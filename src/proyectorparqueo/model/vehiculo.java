@@ -30,13 +30,14 @@ public class vehiculo {
         this.area = "ESTUDIANTE";
     }
 
-    public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo, String area) {
+    public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo,String rol, String area) {
         this.placa = placa;
         this.propietario = propietario;
         this.tipoVehiculo = tipoVehiculo;
         this.tipoPlan = tipoPlan;
         this.planActivo = planActivo;
         this.horaIngreso = LocalDateTime.now();
+        this.rol = (rol == null || rol.isBlank()) ? "ESTUDIANTE" : rol.trim();
         this.area = (area == null || area.isEmpty()) ? "ESTUDIANTE" : area;
     }
     
@@ -63,7 +64,7 @@ public class vehiculo {
     public String getArea(){
         return area;
     }
-    public String rol(){
+    public String getRol(){
         return rol;
     }
 
@@ -88,7 +89,7 @@ public class vehiculo {
     public void setArea(String area){
         this.area = area;
     }
-    public void setrol(String rol){
+    public void setRol(String rol){
         this.rol = rol;
     }
     
