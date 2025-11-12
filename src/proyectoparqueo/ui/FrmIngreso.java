@@ -233,32 +233,66 @@ public class FrmIngreso extends javax.swing.JFrame {
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         
-        String placa = txtPlaca.getText().trim();
-        String propietario = txtPropietario.getText().trim();
-        String tipo = cmbTipo.getSelectedItem().toString();   // "MOTO" o "CARRO"
-        String plan = cmbPlan.getSelectedItem().toString();   // "PLAN (FLAT)" o "TARIFA VARIABLE" (o como lo llames)
-        String rol  = cmbRol.getSelectedItem().toString();    // "ESTUDIANTE" o "CATEDRATICO"
+            // 1) Leer campos
+    String placa       = txtPlaca.getText().trim();
+    String propietario = txtPropietario.getText().trim();
+    String tipo        = (String) cmbTipo.getSelectedItem();   // "MOTO" o "CARRO"
+    String plan        = (String) cmbPlan.getSelectedItem();   // "PLAN (FLAT)" o "VARIABLE"
+    String rol         = (String) cmbRol.getSelectedItem();    // "ESTUDIANTE" o "CATEDRATICO"
 
-// Reglas de área:
-        String area;
-        if ("MOTO".equalsIgnoreCase(tipo)) {
-            area = "MOTOS";
-        } else {
-            area = "ESTUDIANTE".equalsIgnoreCase(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
-        }
+    // 2) Validaciones básicas
+    if (placa.isEmpty() || propietario.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Completa PLACA y PROPIETARIO.");
+        return;
+    }
+    if (tipo == null || plan == null || rol == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Selecciona TIPO, PLAN y ROL.");
+        return;
+    }
 
-// Crear y registrar
-        vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, area);
-        proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
+    // 3) Reglas para asignar ÁREA
+    String areaNombre;
+    if ("MOTO".equalsIgnoreCase(tipo)) {
+        areaNombre = "MOTOS";
+    } else {
+        areaNombre = "ESTUDIANTE".equalsIgnoreCase(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
+    }
 
-// Mostrar resumen en el textarea
-        txtArea.append(String.format(
-        "Placa: %s | Prop: %s | Tipo: %s | Plan: %s | Rol: %s | Área: %s | Ingreso: %s%n",
+    // 4) Validar cupo del área
+    proyectorparqueo.model.Area area = proyectorparqueo.model.DatosApp.getAreaPorNombre(areaNombre);
+    if (area == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Área inválida.");
+        return;
+    }
+    if (area.estaLlena()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Área " + area.getNombre() + " sin cupo.");
+        return;
+    }
+
+    // 5) Crear y registrar el vehículo en el modelo global
+    vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, areaNombre);
+    proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
+
+    // 6) Actualizar ocupación y alertar si ≥ 90%
+    area.setOcupados(area.getOcupados() + 1);
+    double porc = proyectorparqueo.model.DatosApp.porcentajeOcupacion(area);
+    if (porc >= 90.0) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "ALERTA: " + area.getNombre() + " al " + String.format("%.1f", porc) + "% de ocupación."
+        );
+    }
+
+    // 7) Mostrar resumen en el textarea
+    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    txtArea.append(String.format(
+        "Placa: %-8s | Prop: %-18s | Tipo: %-5s | Plan: %-12s | Rol: %-12s | Área: %-13s | Ingreso: %s%n",
         v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(),
-        v.getRol(), v.getArea(), v.getHoraIngreso().toString()
-     ));
-    javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente.");
+        v.getRol(), v.getArea(), v.getHoraIngreso().format(f)
+    ));
 
+    javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado en área " + areaNombre + ".");
+    
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnGuardarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCSVActionPerformed

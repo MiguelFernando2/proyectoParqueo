@@ -5,51 +5,82 @@
 package proyectorparqueo.model;
 
 import java.time.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author DIEGO
  */
 public class DatosApp {
-    //la instancia unica y compartida del controlParqueo
+    // Instancia compartida del “negocio”
     public static final controlParqueo PARQUEO = new controlParqueo();
-    
-    //TARIFAS
+
+    // TARIFAS (por hora)
     public static final double TARIFA_CARRO_POR_HORA = 10.0;
-    public static final double TARIFA_MOTO_POR_HORA =6.0;
-    
-public static ReciboSalida registrarSalida(String placa) {
-    vehiculo v = PARQUEO.buscarPorPlaca(placa);
-    if (v == null) return null;
+    public static final double TARIFA_MOTO_POR_HORA  = 6.0;
 
-    LocalDateTime salida = LocalDateTime.now();
-    long minutos = Duration.between(v.getHoraIngreso(), salida).toMinutes();
-    long horas = (minutos + 59) / 60;
-    if (horas == 0) horas = 1;
-
-    double total = 0.0;
-    String nota = "";
-
-    // Nota especial si es FLAT y se pasó de 120 min
-    if (v.getTipoPlan().equalsIgnoreCase("PLAN (FLAT)")) { 
-        if (minutos > 120) {
-            nota = "El plan FLAT salió y no volvió en 2 horas: plan cancelado.";
-        }
+    // === Catálogo de ÁREAS con capacidad (clave exacta: MOTOS, ESTUDIANTES, CATEDRATICOS)
+    private static final Map<String, Area> AREAS = new HashMap<>();
+    static {
+        AREAS.put("MOTOS",        new Area("A01", "MOTOS",        120, "MOTO"));
+        AREAS.put("ESTUDIANTES",  new Area("A02", "ESTUDIANTES",  220, "AUTO"));
+        AREAS.put("CATEDRATICOS", new Area("A03", "CATEDRATICOS",  60, "AUTO"));
     }
 
-    // Calcular total según tipo de vehículo (para ambos planes)
-    double tarifa = v.getTipoVehiculo().equalsIgnoreCase("MOTO")
-            ? TARIFA_MOTO_POR_HORA
-            : TARIFA_CARRO_POR_HORA;
-    total = horas * tarifa;
+    // Helper: buscar área por nombre
+    public static Area getAreaPorNombre(String nombre) {
+        if (nombre == null) return null;
+        return AREAS.get(nombre.trim().toUpperCase());
+    }
 
-    // Liberar espacio: sacar el vehículo del sistema
-    PARQUEO.eliminarVehiculo(placa);
+    // Helper: % ocupación
+    public static double porcentajeOcupacion(Area a) {
+        if (a == null || a.getCapacidad() <= 0) return 0.0;
+        return (a.getOcupados() * 100.0) / a.getCapacidad();
+    }
 
-    // Siempre retorna aquí
-    return new ReciboSalida(v, salida, minutos, horas, total, nota);
-}
-    //un constructor privado para que no crea objetos de esta clase
-    private DatosApp(){}
-    
+    // === Registrar SALIDA y devolver Recibo ===
+    public static ReciboSalida registrarSalida(String placa) {
+        vehiculo v = PARQUEO.buscarPorPlaca(placa);
+        if (v == null) return null;
+
+        // seguridad por si horaIngreso viniera null
+        if (v.getHoraIngreso() == null) {
+            v.setHoraIngreso(LocalDateTime.now());
+        }
+
+        LocalDateTime salida = LocalDateTime.now();
+        long minutos = Duration.between(v.getHoraIngreso(), salida).toMinutes();
+        long horas = (minutos + 59) / 60; // redondeo hacia arriba
+        if (horas == 0) horas = 1;
+
+        String nota = "";
+        if ("PLAN (FLAT)".equalsIgnoreCase(v.getTipoPlan())) {
+            if (minutos > 120) {
+                nota = "El plan FLAT salió y no volvió en 2 horas: plan cancelado.";
+            }
+        }
+
+        double tarifa = "MOTO".equalsIgnoreCase(v.getTipoVehiculo())
+                ? TARIFA_MOTO_POR_HORA
+                : TARIFA_CARRO_POR_HORA;
+        double total = horas * tarifa;
+
+        // Liberar cupo del área (si está seteada)
+        Area a = getAreaPorNombre(v.getArea());
+        if (a != null && a.getOcupados() > 0) {
+            a.setOcupados(a.getOcupados() - 1);
+        }
+        // Quita el sistema
+        PARQUEO.eliminarVehiculo(placa);
+
+        // Sacar el vehículo del sistema
+        PARQUEO.eliminarVehiculo(placa);
+
+        return new ReciboSalida(v, salida, minutos, horas, total, nota);
+    }
+
+    // Evitar instancias
+    private DatosApp() {}
 }
