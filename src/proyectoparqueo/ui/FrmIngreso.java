@@ -232,32 +232,32 @@ public class FrmIngreso extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbTipoActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
- 
+        
         String placa = txtPlaca.getText().trim();
-String propietario = txtPropietario.getText().trim();
-String tipo = cmbTipo.getSelectedItem().toString();   // "MOTO" o "CARRO"
-String plan = cmbPlan.getSelectedItem().toString();   // "PLAN (FLAT)" o "TARIFA VARIABLE" (o como lo llames)
-String rol  = cmbRol.getSelectedItem().toString();    // "ESTUDIANTE" o "CATEDRATICO"
+        String propietario = txtPropietario.getText().trim();
+        String tipo = cmbTipo.getSelectedItem().toString();   // "MOTO" o "CARRO"
+        String plan = cmbPlan.getSelectedItem().toString();   // "PLAN (FLAT)" o "TARIFA VARIABLE" (o como lo llames)
+        String rol  = cmbRol.getSelectedItem().toString();    // "ESTUDIANTE" o "CATEDRATICO"
 
 // Reglas de área:
-String area;
-if ("MOTO".equalsIgnoreCase(tipo)) {
-    area = "MOTOS";
-} else {
-    area = "ESTUDIANTE".equalsIgnoreCase(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
-}
+        String area;
+        if ("MOTO".equalsIgnoreCase(tipo)) {
+            area = "MOTOS";
+        } else {
+            area = "ESTUDIANTE".equalsIgnoreCase(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
+        }
 
 // Crear y registrar
-vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, area);
-proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
+        vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, area);
+        proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
 
 // Mostrar resumen en el textarea
-txtArea.append(String.format(
+        txtArea.append(String.format(
         "Placa: %s | Prop: %s | Tipo: %s | Plan: %s | Rol: %s | Área: %s | Ingreso: %s%n",
         v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(),
         v.getRol(), v.getArea(), v.getHoraIngreso().toString()
-));
-javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente.");
+     ));
+    javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado correctamente.");
 
     }//GEN-LAST:event_btnRegistrarActionPerformed
 

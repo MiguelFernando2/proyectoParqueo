@@ -26,5 +26,31 @@ public class ReciboSalida {
      this.total = total;
      this.nota = nota;
     }
+
+    public vehiculo getVehiculo() {
+        return vehiculo;
+    }
+
+    public LocalDateTime getHoraSalida() {
+        return horaSalida;
+    }
+
+    public long getMinutos() {
+        return minutos;
+    }
+
+    public long getHorasRedondeadas() {
+        return horasRedondeadas;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public String getNota() {
+        return nota;
+    }
+    
+    
     
 }

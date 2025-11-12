@@ -130,44 +130,64 @@ public class FrmSalida extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
+
         String placa = txtPlaca.getText().trim();
-        if (placa.isEmpty()){
-            javax.swing.JOptionPane.showMessageDialog(this, "INGRESA UNA PLACA. ");
+        if (placa.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Ingresa una placa.");
             return;
-        }
-        vehiculo v = DatosApp.PARQUEO.buscarPorPlaca(placa);
-        if (v == null){
-            javax.swing.JOptionPane.showMessageDialog(this , "NO SE ENCONTRO LA PLACA. ");
-            txtArea.setText("");
-            return;
-        }
-        
-        DateTimeFormatter f = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        txtArea.setText(String.format("PLACA: %s%nPROPIETARIO: &s%TIPO VEHICULO: %s%nPLAN: %s%nINGRESO: %s",
-                v.getPlaca(), v.getPropietario(), v.getTipoVehiculo(), v.getTipoPlan(), v.getHoraIngreso().format(f)));
-        
+    }
+
+    proyectorparqueo.model.vehiculo v =
+            proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(placa);
+
+    if (v == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No se encontró la placa.");
+        txtArea.setText("");
+        btnRegistrarSalida.setEnabled(false);
+        return;
+    }
+
+    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    txtArea.setText(
+        "PLACA: " + v.getPlaca() +
+        "\nPROPIETARIO: " + v.getPropietario() +
+        "\nTIPO: " + v.getTipoVehiculo() +
+        "\nPLAN: " + v.getTipoPlan() +
+        "\nÁREA/ROL: " + v.getArea() +
+        "\nINGRESÓ: " + v.getHoraIngreso().format(f)
+    );
+
+    btnRegistrarSalida.setEnabled(true);
 // TODO 
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+            // Limpia campos
+        txtPlaca.setText("");
+        txtArea.setText("");
+        // Desactiva el botón de registrar salida hasta que se haga una nueva búsqueda válida
+        btnRegistrarSalida.setEnabled(false);
+        // Devuelve el foco a la placa
+        txtPlaca.requestFocus();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnLimpiarActionPerformed
 
     private void btnRegistrarSalidaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarSalidaActionPerformed
 
-        String placa = txtPlaca.getText().trim();
-        if (placa.isEmpty()){
-            javax.swing.JOptionPane.showMessageDialog(this, "Ingresa una placa. ");
-            return;
-        }
-        // CALCULA Y REMUEVE
-        double total = DatosApp.PARQUEO.registrarSalida(placa);
-        if (total<0){
-            javax.swing.JOptionPane.showMessageDialog(this, "No se encontro la placa. ");
-            return;
-        }
-        txtArea.append(String.format("%n%nTOTAL A PAGAR: Q%.2f", total));
-        
+    String placa = txtPlaca.getText().trim();
+    proyectorparqueo.model.ReciboSalida r =
+            proyectorparqueo.model.DatosApp.registrarSalida(placa);
+
+    if (r == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "La placa no está dentro.");
+        return;
+    }
+
+    String ticket = imprimirRecibo(r);
+    txtArea.setText(ticket);
+    javax.swing.JOptionPane.showMessageDialog(this, "Salida registrada.\nTotal Q " +
+            String.format("%.2f", r.getTotal()));
+    btnRegistrarSalida.setEnabled(false);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnRegistrarSalidaActionPerformed
 
@@ -216,4 +236,22 @@ public class FrmSalida extends javax.swing.JFrame {
     private javax.swing.JTextArea txtArea;
     private javax.swing.JTextField txtPlaca;
     // End of variables declaration//GEN-END:variables
+
+    private String imprimirRecibo(proyectorparqueo.model.ReciboSalida r) {
+    java.time.format.DateTimeFormatter f =
+            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    return new StringBuilder()
+        .append("=== RECIBO DE SALIDA ===\n")
+        .append("Placa: ").append(r.getVehiculo().getPlaca()).append('\n')
+        .append("Propietario: ").append(r.getVehiculo().getPropietario()).append('\n')
+        .append("Tipo: ").append(r.getVehiculo().getTipoVehiculo()).append('\n')
+        .append("Plan: ").append(r.getVehiculo().getTipoPlan()).append('\n')
+        .append("Salida: ").append(r.getHoraSalida().format(f)).append('\n')
+        .append("Tiempo: ").append(r.getHorasRedondeadas()).append(" h (")
+                             .append(r.getMinutos()).append(" min)\n")
+        .append("Total Q: ").append(String.format("%.2f", r.getTotal())).append('\n')
+        .append(r.getNota() == null ? "" : r.getNota())
+        .toString();
+}
+
 }
