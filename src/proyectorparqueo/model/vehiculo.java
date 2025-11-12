@@ -37,8 +37,9 @@ public class vehiculo {
         this.tipoPlan = tipoPlan;
         this.planActivo = planActivo;
         this.horaIngreso = LocalDateTime.now();
-        this.rol = (rol == null || rol.isBlank()) ? "ESTUDIANTE" : rol.trim();
-        this.area = (area == null || area.isEmpty()) ? "ESTUDIANTE" : area;
+        this.rol = (rol == null || rol.isBlank()) ? "ESTUDIANTE" : rol.trim().toUpperCase();
+        this.area = (area == null || area.isEmpty()) ? ( "MOTO".equalsIgnoreCase(tipoVehiculo) ? "MOTOS" : 
+                (this.rol.equals("CATEDRATICO") ? "CATEDRATICO" : "ESTUDIANTES" )) : area.trim().toUpperCase();
     }
     
     // FrmReingreso

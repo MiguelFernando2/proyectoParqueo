@@ -4,19 +4,48 @@
  */
 package proyectoparqueo.ui;
 
+import javax.swing.table.DefaultTableModel;
+import proyectorparqueo.model.DatosApp;
+import proyectorparqueo.model.vehiculo;
+
 /**
  *
  * @author DIEGO
  */
 public class FrmReportes extends javax.swing.JFrame {
-
+    
+    private final DefaultTableModel modelo = new DefaultTableModel(
+        new Object[]{"Placa","Propietario","Tipo","Plan","Rol","Área","Ingreso"}, 0);
     /**
      * Creates new form FrmReportes
      */
     public FrmReportes() {
         initComponents();
+        tblDatos.setModel(modelo);
+    // valores por defecto (asegúrate que existan en el diseñador)
+    if (cmbTipo.getItemCount() == 0) {
+        cmbTipo.addItem("TODOS"); cmbTipo.addItem("CARRO"); cmbTipo.addItem("MOTO");
+    }
+    cmbPlan.setModel(new javax.swing.DefaultComboBoxModel<>(
+            new String[] { "TODOS", "PLAN (FLAT)", "TARIFA VARIABLE" }
+    ));
+    
+    if (cmbPlan.getItemCount() == 0) {
+        cmbPlan.addItem("TODOS"); cmbPlan.addItem("PLAN (FLAT)"); cmbPlan.addItem("TARIFA VARIABLE");
+    }
+    if (cmbRol.getItemCount() == 0) {
+        cmbRol.addItem("TODOS"); cmbRol.addItem("ESTUDIANTES"); cmbRol.addItem("CATEDRATICOS");
     }
 
+
+    cmbTipo.addActionListener(e -> refrescarTabla());
+    cmbPlan.addActionListener(e -> refrescarTabla());
+    cmbRol.addActionListener(e -> refrescarTabla());
+    btnRefrescar.addActionListener(e -> refrescarTabla());
+
+    // primer llenado
+    refrescarTabla();
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +55,143 @@ public class FrmReportes extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblDatos = new javax.swing.JTable();
+        cmbTipo = new javax.swing.JComboBox<>();
+        cmbPlan = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        cmbRol = new javax.swing.JComboBox<>();
+        jLabel3 = new javax.swing.JLabel();
+        btnRefrescar = new javax.swing.JButton();
+        lblResumen = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        tblDatos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(tblDatos);
+
+        jScrollPane2.setViewportView(jScrollPane1);
+
+        cmbTipo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "CARRO", "MOTO" }));
+        cmbTipo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbTipoActionPerformed(evt);
+            }
+        });
+
+        cmbPlan.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "PLAN(FLAT)", "TARIFA VARIABLE" }));
+        cmbPlan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbPlanActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("TIPO");
+
+        jLabel2.setText("PLAN");
+
+        cmbRol.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "TODOS", "ESTUDIANTES", "CATEDRATICOS" }));
+        cmbRol.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cmbRolActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("ROL");
+
+        btnRefrescar.setText("REFRESCAR");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
+        lblResumen.setText("PARA MOSTRAR TOTALES");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(9, 9, 9)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(36, 36, 36)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel2))
+                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(43, 43, 43)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(6, 6, 6)
+                                        .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnRefrescar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblResumen)
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void cmbRolActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbRolActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbRolActionPerformed
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+
+        refrescarTabla();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRefrescarActionPerformed
+
+    private void cmbPlanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbPlanActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbPlanActionPerformed
+
+    private void cmbTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cmbTipoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +229,69 @@ public class FrmReportes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnRefrescar;
+    private javax.swing.JComboBox<String> cmbPlan;
+    private javax.swing.JComboBox<String> cmbRol;
+    private javax.swing.JComboBox<String> cmbTipo;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JLabel lblResumen;
+    private javax.swing.JTable tblDatos;
     // End of variables declaration//GEN-END:variables
+
+
+    private void refrescarTabla() {
+    String fTipo = ((String)cmbTipo.getSelectedItem()).trim().toUpperCase();  // "TODOS"/"MOTO"/"CARRO"
+    String fPlan = ((String)cmbPlan.getSelectedItem()).trim().toUpperCase();  // "TODOS"/"PLAN (FLAT)"/"TARIFA VARIABLE"
+    String fRol  = ((String)cmbRol.getSelectedItem()).trim().toUpperCase();   // "TODOS"/"ESTUDIANTES"/"CATEDRATICOS"
+
+    // Normalizaciones (plural->singular y variantes de texto)
+    if (fRol.equals("ESTUDIANTES"))  fRol = "ESTUDIANTE";
+    if (fRol.equals("CATEDRATICOS")) fRol = "CATEDRATICO";
+    if (fPlan.equals("PLAN(FLAT)"))  fPlan = "PLAN (FLAT)"; // por si quedó alguno sin espacio
+
+    javax.swing.table.DefaultTableModel m =
+        (javax.swing.table.DefaultTableModel) tblDatos.getModel();
+    m.setRowCount(0);
+
+    java.time.format.DateTimeFormatter fdt =
+        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    
+    int cMoto = 0, cCarro = 0, cFlat = 0, cVar = 0;
+
+    for (proyectorparqueo.model.vehiculo v : proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos()) {
+        String tipoV = v.getTipoVehiculo() == null ? "" : v.getTipoVehiculo().trim().toUpperCase();
+        String planV = v.getTipoPlan()      == null ? "" : v.getTipoPlan().trim().toUpperCase();
+        String rolV  = v.getRol()           == null ? "" : v.getRol().trim().toUpperCase();
+
+        boolean okTipo = fTipo.equals("TODOS") || tipoV.equals(fTipo);
+        boolean okPlan = fPlan.equals("TODOS") || planV.equals(fPlan);
+        boolean okRol  = fRol.equals("TODOS")  || rolV.equals(fRol);
+
+        if (okTipo && okPlan && okRol) {
+            m.addRow(new Object[]{
+                v.getPlaca(),
+                v.getPropietario(),
+                v.getTipoVehiculo(),
+                v.getTipoPlan(),
+                v.getRol(),
+                v.getArea(),
+                v.getHoraIngreso().format(fdt)
+            });
+            // contadores por lo que se muestra
+            if (tipoV.equals("MOTO"))  cMoto++;
+            if (tipoV.equals("CARRO")) cCarro++;
+            if (planV.equals("PLAN (FLAT)"))     cFlat++;
+            if (planV.equals("TARIFA VARIABLE")) cVar++;
+        }
+    }
+    int totalSistema = proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos().size();
+    int totalMostrados = m.getRowCount();
+
+    lblResumen.setText(String.format("Mostrados: %d | Motos: %d Carros: %d | Flat: %d Variable: %d | Total registrados: %d",
+            + totalMostrados, cMoto, cCarro, cFlat, cVar, totalSistema));
+}
 }

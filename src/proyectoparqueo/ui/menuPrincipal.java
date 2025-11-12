@@ -30,6 +30,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         btnAbrirSalida = new javax.swing.JButton();
         btnReingreso = new javax.swing.JButton();
         lblTituloM = new javax.swing.JLabel();
+        btnReportes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -57,6 +58,13 @@ public class menuPrincipal extends javax.swing.JFrame {
         lblTituloM.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         lblTituloM.setText("MENU PRINCIPAL");
 
+        btnReportes.setText("REPORTES");
+        btnReportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReportesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -64,15 +72,15 @@ public class menuPrincipal extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAbrirSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(18, 18, 18)
-                        .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addGap(252, 252, 252)
-                        .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(btnReingreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAbrirSalida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap(310, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -81,12 +89,14 @@ public class menuPrincipal extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAbrirIngreso)
-                    .addComponent(btnReingreso))
-                .addGap(54, 54, 54)
+                .addComponent(btnAbrirIngreso)
+                .addGap(27, 27, 27)
                 .addComponent(btnAbrirSalida)
-                .addContainerGap(306, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(btnReingreso)
+                .addGap(18, 18, 18)
+                .addComponent(btnReportes)
+                .addContainerGap(239, Short.MAX_VALUE))
         );
 
         pack();
@@ -115,6 +125,12 @@ public class menuPrincipal extends javax.swing.JFrame {
         new FrmReingreso().setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReingresoActionPerformed
+
+    private void btnReportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReportesActionPerformed
+
+        new FrmReportes().setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReportesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -155,6 +171,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton btnAbrirIngreso;
     private javax.swing.JButton btnAbrirSalida;
     private javax.swing.JButton btnReingreso;
+    private javax.swing.JButton btnReportes;
     private javax.swing.JLabel lblTituloM;
     // End of variables declaration//GEN-END:variables
 }

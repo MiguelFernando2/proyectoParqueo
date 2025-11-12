@@ -268,6 +268,10 @@ public class FrmIngreso extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(this, "Área " + area.getNombre() + " sin cupo.");
         return;
     }
+    
+    rol = rol.trim().toUpperCase();
+    if (rol.equals("ESTUDIANTES"))  rol = "ESTUDIANTE";
+    if (rol.equals("CATEDRATICOS")) rol = "CATEDRATICO";
 
     // 5) Crear y registrar el vehículo en el modelo global
     vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, areaNombre);

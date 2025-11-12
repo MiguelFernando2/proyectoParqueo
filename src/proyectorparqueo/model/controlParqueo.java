@@ -128,8 +128,8 @@ public class controlParqueo {
                     v.getPropietario(),
                     v.getTipoVehiculo(),
                     v.getTipoPlan(),
-                    rol,
-                    area,
+                    v.getRol(),
+                    v.getArea(),
                     (v.getHoraIngreso() == null ? java.time.LocalDateTime.now().toString()
                                                 : v.getHoraIngreso().toString()));
         }
