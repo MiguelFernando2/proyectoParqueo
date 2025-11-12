@@ -125,30 +125,32 @@ public class FrmReportes extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(36, 36, 36)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel2))
-                        .addGap(49, 49, 49)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(43, 43, 43)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 401, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(36, 36, 36)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel2))
+                                .addGap(49, 49, 49)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel3)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(43, 43, 43)
+                                        .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addGap(288, 288, 288)))))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -243,6 +245,37 @@ public class FrmReportes extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
+    // Cambia color del lblResumen según el % de ocupación total
+private void pintarResumenPorOcupacion(int adentro) {
+    // 1) Obtener capacidad total desde las Áreas (si existen)
+    int capacidadTotal = 0;
+    proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
+    proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
+    proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
+    if (aM != null) capacidadTotal += aM.getCapacidad();
+    if (aE != null) capacidadTotal += aE.getCapacidad();
+    if (aC != null) capacidadTotal += aC.getCapacidad();
+
+    // Fallback por si aún no configuraste capacidades
+    if (capacidadTotal <= 0) capacidadTotal = 100;
+
+    double porc = 100.0 * adentro / capacidadTotal;
+
+    // 2) Elegir color por umbral
+    // <60% verde, 60–79% amarillo, 80–89% naranja, >=90% rojo
+    java.awt.Color color;
+    if (porc >= 90.0)      color = new java.awt.Color(220, 53, 69);   // rojo
+    else if (porc >= 80.0) color = new java.awt.Color(255, 159, 67);  // naranja
+    else if (porc >= 60.0) color = new java.awt.Color(255, 193, 7);   // amarillo
+    else                   color = new java.awt.Color(40, 167, 69);   // verde
+
+    lblResumen.setForeground(color);
+
+    // (Opcional) fondo coloreado — si quieres “pastel”
+    // lblResumen.setOpaque(true);
+    // lblResumen.setBackground(new java.awt.Color(245, 245, 245));
+}
+    
     private void refrescarTabla() {
     String fTipo = ((String)cmbTipo.getSelectedItem()).trim().toUpperCase();  // "TODOS"/"MOTO"/"CARRO"
     String fPlan = ((String)cmbPlan.getSelectedItem()).trim().toUpperCase();  // "TODOS"/"PLAN (FLAT)"/"TARIFA VARIABLE"
@@ -291,7 +324,9 @@ public class FrmReportes extends javax.swing.JFrame {
     int totalSistema = proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos().size();
     int totalMostrados = m.getRowCount();
 
-    lblResumen.setText(String.format("Mostrados: %d | Motos: %d Carros: %d | Flat: %d Variable: %d | Total registrados: %d",
+    lblResumen.setText(String.format("Mostrados: %d | Motos: %d | Carros: %d | Flat: %d  | Variable: %d | Total registrados: %d",
             + totalMostrados, cMoto, cCarro, cFlat, cVar, totalSistema));
-}
+
+    pintarResumenPorOcupacion(totalSistema);
+    }
 }

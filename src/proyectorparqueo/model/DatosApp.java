@@ -23,9 +23,9 @@ public class DatosApp {
     // === Catálogo de ÁREAS con capacidad (clave exacta: MOTOS, ESTUDIANTES, CATEDRATICOS)
     private static final Map<String, Area> AREAS = new HashMap<>();
     static {
-        AREAS.put("MOTOS",        new Area("A01", "MOTOS",        120, "MOTO"));
-        AREAS.put("ESTUDIANTES",  new Area("A02", "ESTUDIANTES",  220, "AUTO"));
-        AREAS.put("CATEDRATICOS", new Area("A03", "CATEDRATICOS",  60, "AUTO"));
+        AREAS.put("MOTOS",        new Area("A01", "MOTOS",         4, "MOTO"));
+        AREAS.put("ESTUDIANTES",  new Area("A02", "ESTUDIANTES",   120, "AUTO"));
+        AREAS.put("CATEDRATICOS", new Area("A03", "CATEDRATICOS",  110, "AUTO"));
     }
 
     // Helper: buscar área por nombre
