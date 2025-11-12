@@ -41,6 +41,17 @@ public class vehiculo {
         this.area = (area == null || area.isEmpty()) ? "ESTUDIANTE" : area;
     }
     
+    // FrmReingreso
+    public vehiculo(String placa, String propietario, String tipoVehiculo, String tipoPlan, boolean planActivo, LocalDateTime horaIngreso, String rol, String area) {
+        this.placa = placa;
+        this.propietario = propietario;
+        this.tipoVehiculo = tipoVehiculo;
+        this.tipoPlan = tipoPlan;
+        this.planActivo = planActivo;
+        this.horaIngreso = horaIngreso;
+        this.rol = rol;
+        this.area = area;
+    }
     
     
     public String getPlaca() {

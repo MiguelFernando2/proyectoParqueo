@@ -4,6 +4,12 @@
  */
 package proyectoparqueo.ui;
 
+import proyectorparqueo.model.ReciboSalida;
+import proyectorparqueo.model.vehiculo;
+import proyectorparqueo.model.DatosApp;
+import java.time.Duration;
+import java.time.LocalDateTime;
+
 /**
  *
  * @author DIEGO
@@ -26,21 +32,168 @@ public class FrmReingreso extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblTituloR = new javax.swing.JLabel();
+        lblPlacaR = new javax.swing.JLabel();
+        txtPlacaR = new javax.swing.JTextField();
+        btnBuscarR = new javax.swing.JButton();
+        btnLimpiarR = new javax.swing.JButton();
+        btnReingresar = new javax.swing.JButton();
+        JScrollPane = new javax.swing.JScrollPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtAreaR = new javax.swing.JTextArea();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblTituloR.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
+        lblTituloR.setText("REGISTRO DE VEHICULO");
+
+        lblPlacaR.setText("PLACA");
+
+        btnBuscarR.setText("BUSCAR");
+        btnBuscarR.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarRActionPerformed(evt);
+            }
+        });
+
+        btnLimpiarR.setText("LIMPIAR");
+
+        btnReingresar.setText("REINGRESAR");
+        btnReingresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReingresarActionPerformed(evt);
+            }
+        });
+
+        txtAreaR.setColumns(20);
+        txtAreaR.setRows(5);
+        jScrollPane1.setViewportView(txtAreaR);
+
+        JScrollPane.setViewportView(jScrollPane1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(200, 200, 200)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPlacaR, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTituloR, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(103, 103, 103)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(JScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblPlacaR, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(149, 149, 149)
+                                .addComponent(btnBuscarR, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(29, 29, 29)
+                                .addComponent(btnReingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(30, 30, 30)
+                                .addComponent(btnLimpiarR, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(116, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addComponent(lblTituloR, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(27, 27, 27)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblPlacaR)
+                    .addComponent(txtPlacaR, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnBuscarR)
+                    .addComponent(btnLimpiarR)
+                    .addComponent(btnReingresar))
+                .addGap(18, 18, 18)
+                .addComponent(JScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(106, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnBuscarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarRActionPerformed
+
+        String placa = txtPlacaR.getText().trim();
+    if (placa.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Ingresa una placa.");
+        return;
+    }
+
+    ReciboSalida r = DatosApp.getHistorialSalida(placa);
+    if (r == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay registro previo de salida para esta placa.");
+        txtAreaR.setText("");
+        return;
+    }
+
+    vehiculo v = r.getVehiculo();
+    LocalDateTime ahora = LocalDateTime.now();
+    long minutos = Duration.between(r.getHoraSalida(), ahora).toMinutes();
+
+    boolean gratis = false;
+    String mensaje = "";
+
+    if (v.getTipoPlan().equalsIgnoreCase("PLAN (FLAT)")) {
+        if (minutos <= 120) {
+            gratis = true;
+            mensaje = "✅ Reingreso GRATUITO (Plan FLAT dentro de 2 horas)";
+        } else {
+            mensaje = "⚠️ Plan FLAT vencido, volverá a cobrarse al salir.";
+        }
+    } else {
+        mensaje = "🔸 Plan VARIABLE, se cobrará normalmente al salir.";
+    }
+
+    txtAreaR.setText(String.format(
+        "PLACA: %s%nPROPIETARIO: %s%nPLAN: %s%nTIEMPO DESDE SALIDA: %d min%n%s",
+        v.getPlaca(), v.getPropietario(), v.getTipoPlan(), minutos, mensaje
+    ));
+
+    // Habilitar botón si puede reingresar
+    btnReingresar.setEnabled(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarRActionPerformed
+
+    private void btnReingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReingresarActionPerformed
+
+            String placa = txtPlacaR.getText().trim();
+    proyectorparqueo.model.ReciboSalida r = proyectorparqueo.model.DatosApp.getHistorialSalida(placa);
+    if (r == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay historial de salida para esta placa.");
+        return;
+    }
+
+    proyectorparqueo.model.vehiculo v = r.getVehiculo();
+    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+    
+    vehiculo nuevo = new vehiculo(
+            v.getPlaca(),
+            v.getPropietario(),
+            v.getTipoVehiculo(),
+            v.getTipoPlan(),
+            true,      // planActivo
+            ahora,     // nueva hora de ingreso (LocalDateTime)
+            v.getRol(),
+            v.getArea()
+    );
+
+    // === LO QUE FALTABA ===
+    proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(nuevo);
+
+    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    txtAreaR.append(String.format(
+        "%n%n✅ Vehículo reingresado correctamente a %s (hora: %s)",
+        nuevo.getArea(), f.format(nuevo.getHoraIngreso())
+    ));
+    javax.swing.JOptionPane.showMessageDialog(this, "Reingreso registrado con éxito.");
+    btnReingresar.setEnabled(false);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReingresarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -78,5 +231,14 @@ public class FrmReingreso extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollPane JScrollPane;
+    private javax.swing.JButton btnBuscarR;
+    private javax.swing.JButton btnLimpiarR;
+    private javax.swing.JButton btnReingresar;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblPlacaR;
+    private javax.swing.JLabel lblTituloR;
+    private javax.swing.JTextArea txtAreaR;
+    private javax.swing.JTextField txtPlacaR;
     // End of variables declaration//GEN-END:variables
 }

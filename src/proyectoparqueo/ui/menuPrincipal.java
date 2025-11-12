@@ -28,6 +28,8 @@ public class menuPrincipal extends javax.swing.JFrame {
 
         btnAbrirIngreso = new javax.swing.JButton();
         btnAbrirSalida = new javax.swing.JButton();
+        btnReingreso = new javax.swing.JButton();
+        lblTituloM = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -45,25 +47,46 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnReingreso.setText("REINGRESO");
+        btnReingreso.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReingresoActionPerformed(evt);
+            }
+        });
+
+        lblTituloM.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
+        lblTituloM.setText("MENU PRINCIPAL");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(76, 76, 76)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnAbrirSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(786, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(76, 76, 76)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnAbrirSalida, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(252, 252, 252)
+                        .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(310, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(btnAbrirIngreso)
-                .addGap(29, 29, 29)
+                .addGap(19, 19, 19)
+                .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAbrirIngreso)
+                    .addComponent(btnReingreso))
+                .addGap(54, 54, 54)
                 .addComponent(btnAbrirSalida)
-                .addContainerGap(369, Short.MAX_VALUE))
+                .addContainerGap(306, Short.MAX_VALUE))
         );
 
         pack();
@@ -86,6 +109,12 @@ public class menuPrincipal extends javax.swing.JFrame {
         f.setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnAbrirSalidaActionPerformed
+
+    private void btnReingresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReingresoActionPerformed
+
+        new FrmReingreso().setVisible(true);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReingresoActionPerformed
 
     /**
      * @param args the command line arguments
@@ -125,5 +154,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbrirIngreso;
     private javax.swing.JButton btnAbrirSalida;
+    private javax.swing.JButton btnReingreso;
+    private javax.swing.JLabel lblTituloM;
     // End of variables declaration//GEN-END:variables
 }

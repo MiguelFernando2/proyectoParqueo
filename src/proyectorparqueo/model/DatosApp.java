@@ -78,9 +78,25 @@ public class DatosApp {
         // Sacar el vehículo del sistema
         PARQUEO.eliminarVehiculo(placa);
 
+        registrarHistorialSalida(new ReciboSalida(v, salida, minutos, horas, total, nota));
+        
         return new ReciboSalida(v, salida, minutos, horas, total, nota);
     }
 
+    private static final java.util.Map<String, ReciboSalida> HISTORIAL_SALIDAS = new java.util.HashMap<>();
+
+// Guardar la salida registrada (para usar luego en reingreso)
+    public static void registrarHistorialSalida(ReciboSalida r) {
+        if (r != null && r.getVehiculo() != null) {
+            HISTORIAL_SALIDAS.put(r.getVehiculo().getPlaca(), r);
+        }
+    }
+
+// Obtener el último recibo de salida según placa
+    public static ReciboSalida getHistorialSalida(String placa) {
+        return HISTORIAL_SALIDAS.get(placa);
+    }
+    
     // Evitar instancias
     private DatosApp() {}
 }
