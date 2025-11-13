@@ -105,7 +105,7 @@ public class menuPrincipal extends javax.swing.JFrame {
     private void btnAbrirIngresoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirIngresoActionPerformed
 
         FrmIngreso f = new FrmIngreso();
-        f.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         f.setLocationRelativeTo(this);
         f.setVisible(true);
         // TODO add your handling code here:

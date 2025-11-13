@@ -48,9 +48,10 @@ public class FrmIngreso extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtArea = new javax.swing.JTextArea();
         btnRegistrar = new javax.swing.JButton();
+        lblEstadoCupos = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblPlaca.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         lblPlaca.setText("PLACA");
@@ -166,6 +167,8 @@ public class FrmIngreso extends javax.swing.JFrame {
             }
         });
 
+        lblEstadoCupos.setText("ESTADO DE CUPOS");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -175,11 +178,14 @@ public class FrmIngreso extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(btnCargarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(btnGuardarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEstadoCupos, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(btnCargarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(btnGuardarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -192,8 +198,10 @@ public class FrmIngreso extends javax.swing.JFrame {
                     .addComponent(btnCargarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRegistrar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblEstadoCupos)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         lblTitulo.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
@@ -204,7 +212,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(55, Short.MAX_VALUE)
+                .addContainerGap(49, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -214,12 +222,12 @@ public class FrmIngreso extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(lblTitulo, javax.swing.GroupLayout.DEFAULT_SIZE, 72, Short.MAX_VALUE)
-                .addGap(18, 18, 18)
+                .addContainerGap()
+                .addComponent(lblTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -297,6 +305,9 @@ public class FrmIngreso extends javax.swing.JFrame {
 
     javax.swing.JOptionPane.showMessageDialog(this, "Vehículo registrado en área " + areaNombre + ".");
     
+    actualizarEstadoCupos();
+
+    
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void btnGuardarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarCSVActionPerformed
@@ -320,53 +331,171 @@ public class FrmIngreso extends javax.swing.JFrame {
 
     private void btnCargarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCSVActionPerformed
 
-        javax.swing.JFileChooser fileChooser = new javax.swing.JFileChooser();
-        
-        fileChooser.setDialogTitle("Seleccionar archivo CSV. ");
-        
-        fileChooser.setFileSelectionMode(javax.swing.JFileChooser.DIRECTORIES_ONLY);
-        
-        int seleccion = fileChooser.showOpenDialog(this);
-        if (seleccion == javax.swing.JFileChooser.APPROVE_OPTION){
-            java.io.File carpeta = fileChooser.getSelectedFile();
-            java.util.List<java.io.File>listArchivos = new java.util.ArrayList<>();
-            
-            //Buscar recuersivamente las carpeyas
-            buscarArchivosCSV(carpeta, listArchivos);
-            if (!listArchivos.isEmpty()){
-                txtArea.setText("");
-                
-                int cargados = 0;
-                for (java.io.File archivo : listArchivos){
-                    try {
-                        txtArea.append("\n===Archivo: " + archivo.getName() + "===\n " );
-                        
-                        DatosApp.PARQUEO.cargarCSV(archivo.getAbsolutePath());
-                        cargados ++;
-                    } catch (Exception e){
-                        javax.swing.JOptionPane.showMessageDialog(this, "Error al leer " + archivo.getName());
-                    }
-                } 
-                for (proyectorparqueo.model.vehiculo v : proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos()) {
-                    String area = (v.getArea() == null) ? "" : v.getArea();
-                    String fh   = (v.getHoraIngreso() == null) ? "" : v.getHoraIngreso().toString();
+        javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
+    fc.setDialogTitle("Seleccionar archivo(s) CSV o carpeta");
+    fc.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
+    fc.setMultiSelectionEnabled(true);
+    fc.setAcceptAllFileFilterUsed(true);
+    fc.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("CSV", "csv"));
 
-                    txtArea.append(String.format(
-                            "Placa: %-10s | Propietario: %-20s | Tipo: %-10s | Plan: %-15s | Rol: %-15s | Ingreso: %s%n",
-                            v.getPlaca(),
-                            v.getPropietario(),
-                            v.getTipoVehiculo(),
-                            v.getTipoPlan(),
-                            area,
-                            fh
-                    ));
-                }
-                javax.swing.JOptionPane.showMessageDialog(this, "Carga completada.\nSe cargaron " + cargados + "Archivos CSV correctamente. ");
-            }else {
-                javax.swing.JOptionPane.showMessageDialog(this, "No se encontraron archivos CSV en esta carpeta ni subcarpeta");
+    int sel = fc.showOpenDialog(this);
+    if (sel != javax.swing.JFileChooser.APPROVE_OPTION) return;
+
+    java.util.List<java.io.File> archivos = new java.util.ArrayList<>();
+
+    java.io.File elegido = fc.getSelectedFile();
+    if (elegido.isDirectory()) {
+        // buscar recursivamente *.csv
+        java.util.Deque<java.io.File> pila = new java.util.ArrayDeque<>();
+        pila.push(elegido);
+        while(!pila.isEmpty()){
+            java.io.File d = pila.pop();
+            java.io.File[] hijos = d.listFiles();
+            if (hijos == null) continue;
+            for (java.io.File h : hijos){
+                if (h.isDirectory()) pila.push(h);
+                else if (h.getName().toLowerCase().endsWith(".csv")) archivos.add(h);
             }
         }
-            
+    } else {
+        // archivo suelto
+        if (elegido.getName().toLowerCase().endsWith(".csv")) archivos.add(elegido);
+        else {
+            javax.swing.JOptionPane.showMessageDialog(this,"Selecciona un CSV o una carpeta.");
+            return;
+        }
+    }
+
+    if (archivos.isEmpty()){
+        javax.swing.JOptionPane.showMessageDialog(this,"No se encontraron CSV.");
+        return;
+    }
+
+    // Contadores
+    int totalArchivos = 0, totalLineas = 0, aceptados = 0, rechazados = 0, duplicados = 0, sinCupo = 0, malFormados = 0;
+
+    txtArea.setText("");
+    java.time.format.DateTimeFormatter iso = java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+
+    for (java.io.File csv : archivos){
+        totalArchivos++;
+        txtArea.append("\n=== Archivo: " + csv.getAbsolutePath() + " ===\n");
+
+        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(csv))) {
+            String linea;
+            boolean primera = true;
+
+            while((linea = br.readLine()) != null){
+                totalLineas++;
+                if (primera) { 
+                    primera = false; 
+                    // si parece header, saltar
+                    if (linea.toLowerCase().contains("placa") && linea.contains(",")) continue;
+                }
+                if (linea.trim().isEmpty()) continue;
+
+                String[] c = linea.split(",");
+                for (int i=0;i<c.length;i++) c[i] = c[i].trim();
+
+                if (c.length < 4) { // min: placa, propietario, tipo, plan
+                    malFormados++;
+                    txtArea.append("  ! Línea mal formada: " + linea + "\n");
+                    continue;
+                }
+
+                // Campos básicos
+                String placa = c[0];
+                String propietario = c[1];
+                String tipo = c[2].toUpperCase();            // "MOTO"/"CARRO"
+                String plan = c[3].toUpperCase();            // "PLAN (FLAT)"/"TARIFA VARIABLE" u otros
+
+                // Area y fecha (opcionales en tu CSV)
+                String areaCSV = (c.length >= 5) ? c[4].toUpperCase() : "";
+                String fechaCSV = (c.length >= 6) ? c[5] : "";
+
+                // Normalizar plan posible sin espacio: "PLAN(FLAT)" -> "PLAN (FLAT)"
+                if ("PLAN(FLAT)".equals(plan)) plan = "PLAN (FLAT)";
+
+                // Derivar ROL/ÁREA coherentes con las reglas del proyecto
+                String rol;
+                String area;
+                if ("MOTO".equals(tipo)) {
+                    area = "MOTOS";
+                    rol = "ESTUDIANTE";
+                } else { // CARRO
+                    if ("ESTUDIANTES".equals(areaCSV) || "ESTUDIANTE".equals(areaCSV)) {
+                        rol = "ESTUDIANTE";
+                    } else if ("CATEDRATICOS".equals(areaCSV) || "CATEDRATICO".equals(areaCSV)) {
+                        rol = "CATEDRATICO";
+                    } else {
+                        rol = "ESTUDIANTE";
+                    }
+                    area = "ESTUDIANTE".equals(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
+                }
+
+                // Evitar duplicados (ya adentro)
+                if (proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(placa) != null){
+                    duplicados++;
+                    rechazados++;
+                    txtArea.append("  Duplicado (ya adentro): " + placa + "\n");
+                    continue;
+                }
+
+                // Respetar capacidad del área
+                proyectorparqueo.model.Area a = proyectorparqueo.model.DatosApp.getAreaPorNombre(area);
+                if (a != null && a.estaLlena()){
+                    sinCupo++;
+                    rechazados++;
+                    txtArea.append("  x Sin cupo en " + area + " -> " + placa + "\n");
+                    continue;
+                }
+
+                // Construir objeto vehiculo
+                proyectorparqueo.model.vehiculo v = new proyectorparqueo.model.vehiculo(
+                        placa, propietario, tipo, plan, true, rol, area
+                );
+
+                // Si venía fecha en el CSV, intenta usarla
+                if (!fechaCSV.isEmpty()) {
+                    try {
+                        java.time.LocalDateTime hi = java.time.LocalDateTime.parse(fechaCSV, iso);
+                        v.setHoraIngreso(hi);
+                    } catch (Exception ignore) {
+                        // si falla, deja la hora actual
+                    }
+                }
+
+                // Registrar y actualizar ocupación
+                proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
+                if (a != null) a.setOcupados(a.getOcupados() + 1);
+
+                aceptados++;
+                txtArea.append(String.format(
+                        "  CARGADO %-8s | %-12s | %-15s | %-12s | AREA: %-13s | INGRESO: %s%n",
+                        v.getPlaca(), v.getTipoVehiculo(), v.getTipoPlan(), rol, area, v.getHoraIngreso()
+                ));
+            }
+
+        } catch(Exception ex){
+            javax.swing.JOptionPane.showMessageDialog(this, "Error leyendo: " + csv.getName() + "\n" + ex.getMessage());
+        }
+    }
+
+    actualizarEstadoCupos();
+    
+    javax.swing.JOptionPane.showMessageDialog(this,
+            "Carga finalizada.\n" +
+            "Archivos: " + totalArchivos + "\n" +
+            "Líneas leídas: " + totalLineas + "\n" +
+            "Aceptados: " + aceptados + "\n" +
+            "Rechazados: " + rechazados + "\n" +
+            "   • Duplicados: " + duplicados + "\n" +
+            "   • Sin cupo: " + sinCupo + "\n" +
+            "   • Mal formados: " + malFormados
+    );
+
+    // 👇 si ya tienes actualizarEstadoCupos(), ponlo aquí:
+    // actualizarEstadoCupos();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCargarCSVActionPerformed
 
@@ -375,7 +504,7 @@ public class FrmIngreso extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbRolActionPerformed
 
     /**
-     * @param args the command line arguments
+     * @param args the command line arguments 
      */
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -420,6 +549,7 @@ public class FrmIngreso extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblArea;
+    private javax.swing.JLabel lblEstadoCupos;
     private javax.swing.JLabel lblPlaca;
     private javax.swing.JLabel lblPlan;
     private javax.swing.JLabel lblPropietario;
@@ -430,6 +560,27 @@ public class FrmIngreso extends javax.swing.JFrame {
     private javax.swing.JTextField txtPropietario;
     // End of variables declaration//GEN-END:variables
 
+    // === Helpers para mostrar cupos en el label ===
+private void actualizarEstadoCupos() {
+    proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
+    proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
+    proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
+
+    int om = (aM == null) ? 0 : aM.getOcupados();
+    int cm = (aM == null) ? 0 : aM.getCapacidad();
+
+    int oe = (aE == null) ? 0 : aE.getOcupados();
+    int ce = (aE == null) ? 0 : aE.getCapacidad();
+
+    int oc = (aC == null) ? 0 : aC.getOcupados();
+    int cc = (aC == null) ? 0 : aC.getCapacidad();
+
+    lblEstadoCupos.setText(String.format(
+        "MOTOS: %d/%d | ESTUDIANTES: %d/%d | CATEDRÁTICOS: %d/%d",
+        om, cm, oe, ce, oc, cc
+    ));
+}
+    
 private void buscarArchivosCSV(java.io.File carpeta, java.util.List<java.io.File> listaArchivos) {
     java.io.File[] archivos = carpeta.listFiles();
     if (archivos != null) {

@@ -24,8 +24,8 @@ public class DatosApp {
     private static final Map<String, Area> AREAS = new HashMap<>();
     static {
         AREAS.put("MOTOS",        new Area("A01", "MOTOS",         4, "MOTO"));
-        AREAS.put("ESTUDIANTES",  new Area("A02", "ESTUDIANTES",   120, "AUTO"));
-        AREAS.put("CATEDRATICOS", new Area("A03", "CATEDRATICOS",  110, "AUTO"));
+        AREAS.put("ESTUDIANTES",  new Area("A02", "ESTUDIANTES",   4, "AUTO"));
+        AREAS.put("CATEDRATICOS", new Area("A03", "CATEDRATICOS",  4, "AUTO"));
     }
 
     // Helper: buscar área por nombre

@@ -67,7 +67,7 @@ public class FrmReportes extends javax.swing.JFrame {
         btnRefrescar = new javax.swing.JButton();
         lblResumen = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         tblDatos.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {

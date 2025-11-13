@@ -137,61 +137,69 @@ public class controlParqueo {
         throw new RuntimeException("Error al guardar CSV: " + e.getMessage(), e);
     }
 }
-    
     public void cargarCSV(String nombreArchivo) throws IOException {
-    try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(nombreArchivo))) {
+    try (BufferedReader br = new BufferedReader(new FileReader(nombreArchivo))) {
         String linea;
         boolean primera = true;
 
         while ((linea = br.readLine()) != null) {
             if (primera) {
                 primera = false;
-                // Saltar encabezado si viene
-                String low = linea.toLowerCase();
-                if (low.contains("placa") && low.contains("propietario")) continue;
+                // salta encabezado típico
+                if (linea.toLowerCase().contains("placa")) continue;
             }
             if (linea.trim().isEmpty()) continue;
 
             String[] datos = linea.split(",");
             for (int i = 0; i < datos.length; i++) datos[i] = datos[i].trim();
 
-            // Soporte a CSV viejos (4..7 columnas)
-            String placa         = (datos.length >= 1) ? datos[0] : "";
-            String propietario   = (datos.length >= 2) ? datos[1] : "";
-            String tipo          = (datos.length >= 3) ? datos[2] : "CARRO";
-            String plan          = (datos.length >= 4) ? datos[3] : "PLAN (FLAT)";
-            String rol           = (datos.length >= 5) ? datos[4] : "";    // puede venir vacío
-            String area          = (datos.length >= 6) ? datos[5] : "";
-            String fechaStr      = (datos.length >= 7) ? datos[6] : "";
+            // CSV mínimo: placa, propietario, tipo, plan
+            if (datos.length >= 4) {
+                String placa       = datos[0];
+                String propietario = datos[1];
+                String tipo        = datos[2]; // "MOTO" / "CARRO"
+                String plan        = datos[3]; // "PLAN (FLAT)" / "TARIFA VARIABLE"
 
-            // Inferencias para compatibilidad
-            if (rol.isBlank()) {
-                // Si hay área y no hay rol ⇒ infiere rol
-                if ("ESTUDIANTES".equalsIgnoreCase(area)) rol = "ESTUDIANTE";
-                else if ("CATEDRATICOS".equalsIgnoreCase(area)) rol = "CATEDRATICO";
-                else rol = "ESTUDIANTE"; // default seguro
+                // Opcionales en el CSV:
+                String rolCSV  = (datos.length >= 5) ? datos[4] : "";
+                String areaCSV = (datos.length >= 6) ? datos[5] : "";
+
+                // Normalizar ROL para que coincida con lo que guardas
+                String rol = rolCSV == null ? "" : rolCSV.trim().toUpperCase();
+                if (rol.equals("ESTUDIANTES"))  rol = "ESTUDIANTE";
+                if (rol.equals("CATEDRATICOS")) rol = "CATEDRATICO";
+
+                // Determinar área destino (si no viene en CSV)
+                String areaNombre;
+                if (!areaCSV.isEmpty()) {
+                    areaNombre = areaCSV.toUpperCase();
+                } else if ("MOTO".equalsIgnoreCase(tipo)) {
+                    areaNombre = "MOTOS";
+                } else {
+                    areaNombre = "ESTUDIANTE".equals(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
+                }
+
+                // Evitar duplicados por placa
+                if (buscarPorPlaca(placa) != null) {
+                    // ya existe -> saltar
+                    continue;
+                }
+
+                // Respetar cupo del área
+                proyectorparqueo.model.Area area = proyectorparqueo.model.DatosApp.getAreaPorNombre(areaNombre);
+                if (area != null && area.estaLlena()) {
+                    // sin espacio -> saltar
+                    continue;
+                }
+
+                // Crear vehículo (usa tu constructor con rol y área)
+                vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, areaNombre);
+
+                // Agregar al sistema usando el método central (así actualiza ocupación)
+                registrarVehiculo(v); // <- este suma area.ocupados()
             }
-
-            if (area.isBlank()) {
-                // Calcula área a partir de regla
-                if ("MOTO".equalsIgnoreCase(tipo)) area = "MOTOS";
-                else area = ("ESTUDIANTE".equalsIgnoreCase(rol)) ? "ESTUDIANTES" : "CATEDRATICOS";
-            }
-
-            vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, area);
-
-            // Si viene fecha, trata de setear horaIngreso
-            if (!fechaStr.isBlank()) {
-                try {
-                    v.setHoraIngreso(java.time.LocalDateTime.parse(fechaStr));
-                } catch (Exception ignore) { /* deja la hora actual si no parsea */ }
-            }
-
-            vehiculos.add(v);
         }
     }
-    
-            
 }
         
         public ArrayList<vehiculo> getVehiculos(){

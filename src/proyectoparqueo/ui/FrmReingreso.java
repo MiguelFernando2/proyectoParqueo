@@ -42,7 +42,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtAreaR = new javax.swing.JTextArea();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         lblTituloR.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         lblTituloR.setText("REGISTRO DE VEHICULO");
