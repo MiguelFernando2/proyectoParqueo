@@ -15,37 +15,67 @@ import proyectorparqueo.model.vehiculo;
 public class FrmReportes extends javax.swing.JFrame {
     
     private final DefaultTableModel modelo = new DefaultTableModel(
-        new Object[]{"Placa","Propietario","Tipo","Plan","Rol","Área","Ingreso"}, 0);
+        new Object[]{"Placa","Propietario","Tipo","Plan","Rol","Área","Ingreso", "Estado"}, 0);
+    
+    // Helper opcional: convierte null -> "" y a MAYÚSCULAS
+    private String safeUpper(String s) {
+        return (s == null) ? "" : s.trim().toUpperCase();
+    }
+    
     /**
      * Creates new form FrmReportes
      */
     public FrmReportes() {
         initComponents();
+        setLocationRelativeTo(null);      // centrar ventana (opcional)
         tblDatos.setModel(modelo);
-    // valores por defecto (asegúrate que existan en el diseñador)
-    if (cmbTipo.getItemCount() == 0) {
-        cmbTipo.addItem("TODOS"); cmbTipo.addItem("CARRO"); cmbTipo.addItem("MOTO");
+        tblDatos.setDefaultRenderer(Object.class, new javax.swing.table.DefaultTableCellRenderer() {
+    @Override
+    public java.awt.Component getTableCellRendererComponent(
+            javax.swing.JTable table, Object value,
+            boolean isSelected, boolean hasFocus,
+            int row, int column) {
+
+        java.awt.Component c = super.getTableCellRendererComponent(
+                table, value, isSelected, hasFocus, row, column);
+
+        int colEstado = 7; // índice de la columna "Estado"
+        Object valEstado = table.getValueAt(row, colEstado);
+        String estado = (valEstado == null) ? "" : valEstado.toString().trim().toUpperCase();
+
+        if ("PENDIENTE".equals(estado)) {
+            c.setBackground(new java.awt.Color(255, 255, 200)); // amarillo suave
+        } else {
+            if (isSelected) {
+                c.setBackground(table.getSelectionBackground());
+            } else {
+                c.setBackground(java.awt.Color.WHITE);
+            }
+        }
+        return c;
     }
-    cmbPlan.setModel(new javax.swing.DefaultComboBoxModel<>(
+});
+
+        // Los combos ya tienen valores desde el diseñador:
+        //  cmbTipo  -> { "TODOS", "CARRO", "MOTO" }
+        //  cmbPlan  -> { "TODOS", "PLAN (FLAT)", "TARIFA VARIABLE" }
+        //  cmbRol   -> { "TODOS", "ESTUDIANTES", "CATEDRATICOS" }
+
+        // Por si acaso, dejamos el plan EXACTO como lo usamos en el código:
+        cmbPlan.setModel(new javax.swing.DefaultComboBoxModel<>(
             new String[] { "TODOS", "PLAN (FLAT)", "TARIFA VARIABLE" }
-    ));
+        ));
+
+        // Filtros: cada vez que cambie algo, refresca la tabla
+        cmbTipo.addActionListener(e -> refrescarTabla());
+        cmbPlan.addActionListener(e -> refrescarTabla());
+        cmbRol.addActionListener(e -> refrescarTabla());
+        btnRefrescar.addActionListener(e -> refrescarTabla());
+
+        // Primer llenado
+        refrescarTabla();
+    }
     
-    if (cmbPlan.getItemCount() == 0) {
-        cmbPlan.addItem("TODOS"); cmbPlan.addItem("PLAN (FLAT)"); cmbPlan.addItem("TARIFA VARIABLE");
-    }
-    if (cmbRol.getItemCount() == 0) {
-        cmbRol.addItem("TODOS"); cmbRol.addItem("ESTUDIANTES"); cmbRol.addItem("CATEDRATICOS");
-    }
-
-
-    cmbTipo.addActionListener(e -> refrescarTabla());
-    cmbPlan.addActionListener(e -> refrescarTabla());
-    cmbRol.addActionListener(e -> refrescarTabla());
-    btnRefrescar.addActionListener(e -> refrescarTabla());
-
-    // primer llenado
-    refrescarTabla();
-    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -125,32 +155,28 @@ public class FrmReportes extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 473, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(9, 9, 9)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(36, 36, 36)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel2))
-                                .addGap(49, 49, 49)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(43, 43, 43)
-                                        .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(288, 288, 288)))))
+                    .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(9, 9, 9)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGap(36, 36, 36)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addGap(49, 49, 49)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel3)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(43, 43, 43)
+                                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(79, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -167,9 +193,9 @@ public class FrmReportes extends javax.swing.JFrame {
                     .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnRefrescar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(9, 9, 9)
                 .addComponent(lblResumen)
-                .addGap(15, 15, 15)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(25, Short.MAX_VALUE))
         );
@@ -245,88 +271,243 @@ public class FrmReportes extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    // Cambia color del lblResumen según el % de ocupación total
-private void pintarResumenPorOcupacion(int adentro) {
-    // 1) Obtener capacidad total desde las Áreas (si existen)
-    int capacidadTotal = 0;
+    // Devuelve un color CSS según el porcentaje de ocupación
+    // Devuelve el color en texto CSS según el porcentaje
+private String colorCSS(double porcentaje) {
+    if (porcentaje >= 90.0) return "#dc3545"; // rojo
+    if (porcentaje >= 80.0) return "#fd7e14"; // naranja
+    if (porcentaje >= 60.0) return "#ffc107"; // amarillo
+    return "#28a745";                         // verde
+}
+    // En FrmReportes.java (fuera de cualquier otro método)
+
+private void actualizarResumenPorAreasYTotales(
+        int totalMostrados, int cMoto, int cCarro, int cFlat, int cVar, int totalSistema) {
+
+    // 1) Obtener áreas del modelo
     proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
     proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
     proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
-    if (aM != null) capacidadTotal += aM.getCapacidad();
-    if (aE != null) capacidadTotal += aE.getCapacidad();
-    if (aC != null) capacidadTotal += aC.getCapacidad();
 
-    // Fallback por si aún no configuraste capacidades
-    if (capacidadTotal <= 0) capacidadTotal = 100;
+    int capM = (aM == null) ? 0 : aM.getCapacidad();
+    int ocM  = (aM == null) ? 0 : aM.getOcupados();
 
-    double porc = 100.0 * adentro / capacidadTotal;
+    int capE = (aE == null) ? 0 : aE.getCapacidad();
+    int ocE  = (aE == null) ? 0 : aE.getOcupados();
 
-    // 2) Elegir color por umbral
-    // <60% verde, 60–79% amarillo, 80–89% naranja, >=90% rojo
-    java.awt.Color color;
-    if (porc >= 90.0)      color = new java.awt.Color(220, 53, 69);   // rojo
-    else if (porc >= 80.0) color = new java.awt.Color(255, 159, 67);  // naranja
-    else if (porc >= 60.0) color = new java.awt.Color(255, 193, 7);   // amarillo
-    else                   color = new java.awt.Color(40, 167, 69);   // verde
+    int capC = (aC == null) ? 0 : aC.getCapacidad();
+    int ocC  = (aC == null) ? 0 : aC.getOcupados();
 
-    lblResumen.setForeground(color);
+    double pM = (capM > 0) ? 100.0 * ocM / capM : 0.0;
+    double pE = (capE > 0) ? 100.0 * ocE / capE : 0.0;
+    double pC = (capC > 0) ? 100.0 * ocC / capC : 0.0;
 
-    // (Opcional) fondo coloreado — si quieres “pastel”
-    // lblResumen.setOpaque(true);
-    // lblResumen.setBackground(new java.awt.Color(245, 245, 245));
+    // 2) Construir texto HTML con colores por área
+    String html = String.format(
+        "<html>" +
+        "Mostrados: %d | Motos: %d | Carros: %d | Flat: %d | Variable: %d | Total registrados: %d" +
+        "<br/>" +
+        "Motos: <span style='color:%s'>%d/%d (%.0f%%)</span> &nbsp; | " +
+        "Estudiantes: <span style='color:%s'>%d/%d (%.0f%%)</span> &nbsp; | " +
+        "Catedráticos: <span style='color:%s'>%d/%d (%.0f%%)</span>" +
+        "</html>",
+        totalMostrados, cMoto, cCarro, cFlat, cVar, totalSistema,
+        colorCSS(pM), ocM, capM, pM,
+        colorCSS(pE), ocE, capE, pE,
+        colorCSS(pC), ocC, capC, pC
+    );
+
+    lblResumen.setText(html);   // 👉 aquí se aplican los colores HTML
 }
-    
     private void refrescarTabla() {
-    String fTipo = ((String)cmbTipo.getSelectedItem()).trim().toUpperCase();  // "TODOS"/"MOTO"/"CARRO"
-    String fPlan = ((String)cmbPlan.getSelectedItem()).trim().toUpperCase();  // "TODOS"/"PLAN (FLAT)"/"TARIFA VARIABLE"
-    String fRol  = ((String)cmbRol.getSelectedItem()).trim().toUpperCase();   // "TODOS"/"ESTUDIANTES"/"CATEDRATICOS"
+    // --- filtros desde los combos ---
+    String fTipo = safeUpper((String) cmbTipo.getSelectedItem());  // "TODOS"/"CARRO"/"MOTO"
+    String fPlan = safeUpper((String) cmbPlan.getSelectedItem());  // "TODOS"/"PLAN (FLAT)"/"TARIFA VARIABLE"
+    String fRol  = safeUpper((String) cmbRol.getSelectedItem());   // "TODOS"/"ESTUDIANTES"/"CATEDRATICOS"
 
-    // Normalizaciones (plural->singular y variantes de texto)
+    // Normalizar ROL para comparar con lo que guarda vehiculo
     if (fRol.equals("ESTUDIANTES"))  fRol = "ESTUDIANTE";
     if (fRol.equals("CATEDRATICOS")) fRol = "CATEDRATICO";
-    if (fPlan.equals("PLAN(FLAT)"))  fPlan = "PLAN (FLAT)"; // por si quedó alguno sin espacio
 
     javax.swing.table.DefaultTableModel m =
         (javax.swing.table.DefaultTableModel) tblDatos.getModel();
-    m.setRowCount(0);
+    m.setRowCount(0);   // limpiar tabla
 
     java.time.format.DateTimeFormatter fdt =
-        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    
+            java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    // Contadores globales (solo de lo que se muestra)
     int cMoto = 0, cCarro = 0, cFlat = 0, cVar = 0;
 
+    // Contadores de cupos POR ÁREA (ADENTRO + PENDIENTES)
+    int ocupMotos = 0, ocupEst = 0, ocupCat = 0;
+
+    int pendientes = 0;   // FLAT PENDIENTES que todavía reservan espacio
+    java.util.Set<String> yaAgregadas = new java.util.HashSet<>();
+
+    // ==========================
+    // 1) Vehículos ADENTRO
+    // ==========================
     for (proyectorparqueo.model.vehiculo v : proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos()) {
-        String tipoV = v.getTipoVehiculo() == null ? "" : v.getTipoVehiculo().trim().toUpperCase();
-        String planV = v.getTipoPlan()      == null ? "" : v.getTipoPlan().trim().toUpperCase();
-        String rolV  = v.getRol()           == null ? "" : v.getRol().trim().toUpperCase();
+
+        String tipoV   = safeUpper(v.getTipoVehiculo());
+        String planV   = safeUpper(v.getTipoPlan());
+        String rolV    = safeUpper(v.getRol());
+        String areaV   = safeUpper(v.getArea());
+        String placaUp = safeUpper(v.getPlaca());
 
         boolean okTipo = fTipo.equals("TODOS") || tipoV.equals(fTipo);
-        boolean okPlan = fPlan.equals("TODOS") || planV.equals(fPlan);
-        boolean okRol  = fRol.equals("TODOS")  || rolV.equals(fRol);
 
-        if (okTipo && okPlan && okRol) {
-            m.addRow(new Object[]{
+        boolean okPlan;
+        if (fPlan.equals("TODOS")) {
+            okPlan = true;
+        } else if (fPlan.contains("FLAT")) {
+            okPlan = planV.contains("FLAT");
+        } else if (fPlan.contains("VARIABLE")) {
+            okPlan = planV.contains("VARIABLE");
+        } else {
+            okPlan = planV.equals(fPlan);
+        }
+
+        boolean okRol = fRol.equals("TODOS") || rolV.equals(fRol);
+
+        if (!okTipo || !okPlan || !okRol) continue;
+
+        m.addRow(new Object[]{
                 v.getPlaca(),
                 v.getPropietario(),
                 v.getTipoVehiculo(),
                 v.getTipoPlan(),
                 v.getRol(),
                 v.getArea(),
-                v.getHoraIngreso().format(fdt)
-            });
-            // contadores por lo que se muestra
-            if (tipoV.equals("MOTO"))  cMoto++;
-            if (tipoV.equals("CARRO")) cCarro++;
-            if (planV.equals("PLAN (FLAT)"))     cFlat++;
-            if (planV.equals("TARIFA VARIABLE")) cVar++;
+                (v.getHoraIngreso() == null) ? "" : v.getHoraIngreso().format(fdt),
+                "ADENTRO"
+        });
+
+        yaAgregadas.add(placaUp);
+
+        // contadores globales
+        if (tipoV.equals("MOTO"))  cMoto++;
+        if (tipoV.equals("CARRO")) cCarro++;
+        if (planV.contains("FLAT"))     cFlat++;
+        if (planV.contains("VARIABLE")) cVar++;
+
+        // contadores por área (ADENTRO)
+        if (areaV.equals("MOTOS"))            ocupMotos++;
+        else if (areaV.equals("ESTUDIANTES"))  ocupEst++;
+        else if (areaV.equals("CATEDRATICOS")) ocupCat++;
+    }
+
+    // =============================================
+    // 2) Vehículos FLAT PENDIENTES (salieron hace ≤2h)
+    // =============================================
+    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+
+    for (proyectorparqueo.model.ReciboSalida r : proyectorparqueo.model.DatosApp.HISTORIAL_SALIDAS) {
+
+        proyectorparqueo.model.vehiculo v = r.getVehiculo();
+        if (v == null) continue;
+
+        String placaUp = safeUpper(v.getPlaca());
+        String planV   = safeUpper(v.getTipoPlan());
+        String tipoV   = safeUpper(v.getTipoVehiculo());
+        String rolV    = safeUpper(v.getRol());
+        String areaV   = safeUpper(v.getArea());
+
+        // Solo FLAT
+        if (!planV.contains("FLAT")) continue;
+
+        // Si ya volvió a entrar, ya no es pendiente
+        if (proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(v.getPlaca()) != null) {
+            continue;
         }
+
+        // Si ya lo agregamos por alguna razón, saltar
+        if (yaAgregadas.contains(placaUp)) continue;
+
+        // ¿Sigue dentro de las 2 horas afuera?
+        long minutosFuera = java.time.Duration.between(r.getHoraSalida(), ahora).toMinutes();
+        if (minutosFuera > 120) continue;    // ya no debe aparecer
+
+        // Aplicar filtros
+        boolean okTipo = fTipo.equals("TODOS") || tipoV.equals(fTipo);
+
+        boolean okPlan;
+        if (fPlan.equals("TODOS")) {
+            okPlan = true;
+        } else if (fPlan.contains("FLAT")) {
+            okPlan = planV.contains("FLAT");
+        } else if (fPlan.contains("VARIABLE")) {
+            okPlan = planV.contains("VARIABLE");
+        } else {
+            okPlan = planV.equals(fPlan);
+        }
+
+        boolean okRol = fRol.equals("TODOS") || rolV.equals(fRol);
+
+        if (!okTipo || !okPlan || !okRol) continue;
+
+        // Agregar fila como PENDIENTE (queda amarilla por el renderer)
+        m.addRow(new Object[]{
+                v.getPlaca(),
+                v.getPropietario(),
+                v.getTipoVehiculo(),
+                v.getTipoPlan(),
+                v.getRol(),
+                v.getArea(),
+                r.getHoraSalida().format(fdt),   // mostramos la hora de salida
+                "PENDIENTE"
+        });
+
+        yaAgregadas.add(placaUp);
+        pendientes++;
+
+        // También cuentan como espacio ocupado en su área
+        if (areaV.equals("MOTOS"))            ocupMotos++;
+        else if (areaV.equals("ESTUDIANTES"))  ocupEst++;
+        else if (areaV.equals("CATEDRATICOS")) ocupCat++;
+
+        // y en globales:
+        if (tipoV.equals("MOTO"))  cMoto++;
+        if (tipoV.equals("CARRO")) cCarro++;
+        if (planV.contains("FLAT"))     cFlat++;
+        if (planV.contains("VARIABLE")) cVar++;
     }
-    int totalSistema = proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos().size();
+
+    int adentro        = proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos().size();
     int totalMostrados = m.getRowCount();
+    int totalLogico    = adentro + pendientes; // lo que realmente ocupa espacio (adentro + pendientes)
 
-    lblResumen.setText(String.format("Mostrados: %d | Motos: %d | Carros: %d | Flat: %d  | Variable: %d | Total registrados: %d",
-            + totalMostrados, cMoto, cCarro, cFlat, cVar, totalSistema));
+    // --- capacidades de cada área ---
+    proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
+    proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
+    proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
 
-    pintarResumenPorOcupacion(totalSistema);
-    }
+    int capMotos = (aM == null) ? 0 : aM.getCapacidad();
+    int capEst   = (aE == null) ? 0 : aE.getCapacidad();
+    int capCat   = (aC == null) ? 0 : aC.getCapacidad();
+
+    double pMotos = (capMotos > 0) ? 100.0 * ocupMotos / capMotos : 0;
+    double pEst   = (capEst   > 0) ? 100.0 * ocupEst   / capEst   : 0;
+    double pCat   = (capCat   > 0) ? 100.0 * ocupCat   / capCat   : 0;
+
+    // ==========================
+    // Resumen con COLORES (HTML)
+    // ==========================
+    String resumenHtml = String.format(
+        "<html>" +
+        "Mostrados: %d | Motos: %d | Carros: %d | Flat: %d | Variable: %d | Total lógicos: %d" +
+        "<br/>" +
+        "Motos: <span style='color:%s'>%d/%d (%.0f%%)</span> &nbsp; | " +
+        "Estudiantes: <span style='color:%s'>%d/%d (%.0f%%)</span> &nbsp; | " +
+        "Catedráticos: <span style='color:%s'>%d/%d (%.0f%%)</span>" +
+        "</html>",
+        totalMostrados, cMoto, cCarro, cFlat, cVar, totalLogico,
+        colorCSS(pMotos), ocupMotos, capMotos, pMotos,
+        colorCSS(pEst),   ocupEst,   capEst,   pEst,
+        colorCSS(pCat),   ocupCat,   capCat,   pCat
+    );
+
+    lblResumen.setText(resumenHtml);
+}
 }

@@ -118,78 +118,171 @@ public class FrmReingreso extends javax.swing.JFrame {
 
     private void btnBuscarRActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarRActionPerformed
 
+         String placa = txtPlacaR.getText().trim();
+    if (placa.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(this, "Ingresa una placa.");
+        return;
+    }
+
+    // 👉 Usar la última salida registrada
+    proyectorparqueo.model.ReciboSalida r =
+            proyectorparqueo.model.DatosApp.ultimaSalidaDe(placa);
+
+    if (r == null) {
+        javax.swing.JOptionPane.showMessageDialog(this, "No hay registro previo de salida para esta placa.");
+        txtAreaR.setText("");
+        btnReingresar.setEnabled(false);
+        return;
+    }
+
+    proyectorparqueo.model.vehiculo v = r.getVehiculo();
+    java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+    long minutos = java.time.Duration.between(r.getHoraSalida(), ahora).toMinutes();
+
+    // Normalizar plan
+    String plan = (v.getTipoPlan() == null) ? "" : v.getTipoPlan().toUpperCase();
+
+    boolean puedeReingresarGratis = false;
+    String mensaje;
+
+    if (plan.contains("FLAT")) {
+        if (minutos <= 120) {
+            puedeReingresarGratis = true;
+            mensaje = "✅ PLAN (FLAT): reingreso GRATUITO (dentro de las 2 horas).";
+        } else {
+            mensaje = "⚠️ PLAN (FLAT): han pasado más de 2 horas.\n"
+                    + "El plan se considera vencido, se cobrará nuevamente en un nuevo ingreso.";
+        }
+    } else {
+        mensaje = "🔸 PLAN VARIABLE: se cobrará normalmente al salir.";
+    }
+
+    txtAreaR.setText(String.format(
+        "PLACA: %s%n" +
+        "PROPIETARIO: %s%n" +
+        "TIPO: %s%n" +
+        "PLAN: %s%n" +
+        "ROL: %s%n" +
+        "ÁREA: %s%n" +
+        "HORA SALIDA: %s%n" +
+        "TIEMPO DESDE SALIDA: %d min%n%n" +
+        "%s",
+        v.getPlaca(),
+        v.getPropietario(),
+        v.getTipoVehiculo(),
+        v.getTipoPlan(),
+        v.getRol(),
+        v.getArea(),
+        r.getHoraSalida(),
+        minutos,
+        mensaje
+    ));
+
+    // Solo habilitar el botón si puede reingresar GRATIS con FLAT
+    btnReingresar.setEnabled(puedeReingresarGratis);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnBuscarRActionPerformed
+
+    private void btnReingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReingresarActionPerformed
+
         String placa = txtPlacaR.getText().trim();
     if (placa.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Ingresa una placa.");
         return;
     }
 
-    ReciboSalida r = DatosApp.getHistorialSalida(placa);
+    // 1) Buscar la ÚLTIMA salida registrada para esa placa
+    proyectorparqueo.model.ReciboSalida r =
+            proyectorparqueo.model.DatosApp.ultimaSalidaDe(placa);
+
     if (r == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, "No hay registro previo de salida para esta placa.");
-        txtAreaR.setText("");
-        return;
-    }
-
-    vehiculo v = r.getVehiculo();
-    LocalDateTime ahora = LocalDateTime.now();
-    long minutos = Duration.between(r.getHoraSalida(), ahora).toMinutes();
-
-    boolean gratis = false;
-    String mensaje = "";
-
-    if (v.getTipoPlan().equalsIgnoreCase("PLAN (FLAT)")) {
-        if (minutos <= 120) {
-            gratis = true;
-            mensaje = "✅ Reingreso GRATUITO (Plan FLAT dentro de 2 horas)";
-        } else {
-            mensaje = "⚠️ Plan FLAT vencido, volverá a cobrarse al salir.";
-        }
-    } else {
-        mensaje = "🔸 Plan VARIABLE, se cobrará normalmente al salir.";
-    }
-
-    txtAreaR.setText(String.format(
-        "PLACA: %s%nPROPIETARIO: %s%nPLAN: %s%nTIEMPO DESDE SALIDA: %d min%n%s",
-        v.getPlaca(), v.getPropietario(), v.getTipoPlan(), minutos, mensaje
-    ));
-
-    // Habilitar botón si puede reingresar
-    btnReingresar.setEnabled(true);
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBuscarRActionPerformed
-
-    private void btnReingresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReingresarActionPerformed
-
-            String placa = txtPlacaR.getText().trim();
-    proyectorparqueo.model.ReciboSalida r = proyectorparqueo.model.DatosApp.getHistorialSalida(placa);
-    if (r == null) {
-        javax.swing.JOptionPane.showMessageDialog(this, "No hay historial de salida para esta placa.");
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "No hay historial de salida para esta placa.");
         return;
     }
 
     proyectorparqueo.model.vehiculo v = r.getVehiculo();
+
+    // 2) Validar que el plan sea FLAT
+    String plan = (v.getTipoPlan() == null) ? "" : v.getTipoPlan().toUpperCase();
+    if (!plan.contains("FLAT")) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "El reingreso solo aplica para vehículos con PLAN (FLAT)."
+        );
+        return;
+    }
+
+    // 3) Validar que no hayan pasado más de 2 horas desde la SALIDA
+    java.time.LocalDateTime horaSalida = r.getHoraSalida();
     java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
-    
-    vehiculo nuevo = new vehiculo(
-            v.getPlaca(),
-            v.getPropietario(),
-            v.getTipoVehiculo(),
-            v.getTipoPlan(),
-            true,      // planActivo
-            ahora,     // nueva hora de ingreso (LocalDateTime)
-            v.getRol(),
-            v.getArea()
-    );
+    long minutosFuera = java.time.Duration.between(horaSalida, ahora).toMinutes();
 
-    // === LO QUE FALTABA ===
+    if (minutosFuera > 120) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "Han pasado más de 2 horas desde la salida.\n"
+              + "El plan FLAT se considera cancelado.\n"
+              + "Debes registrarlo como un ingreso nuevo normal."
+        );
+        return;
+    }
+
+    // 4) Validar cupo del área donde estaba estacionado
+    proyectorparqueo.model.Area area =
+            proyectorparqueo.model.DatosApp.getAreaPorNombre(v.getArea());
+
+    if (area != null && area.estaLlena()) {
+        javax.swing.JOptionPane.showMessageDialog(
+                this,
+                "No hay cupo en el área " + area.getNombre() + " para reingresar."
+        );
+        return;
+    }
+
+    // 5) Crear NUEVO vehículo con nueva hora de ingreso (ahora)
+    proyectorparqueo.model.vehiculo nuevo =
+            new proyectorparqueo.model.vehiculo(
+                    v.getPlaca(),
+                    v.getPropietario(),
+                    v.getTipoVehiculo(),
+                    v.getTipoPlan(),
+                    true,          // planActivo
+                    ahora,         // nueva hora de ingreso
+                    v.getRol(),
+                    v.getArea()
+            );
+
+    // 6) Registrar en el parqueo y actualizar ocupación
     proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(nuevo);
+    if (area != null) {
+        area.setOcupados(area.getOcupados() + 1);
+    }
 
-    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    // 🔸 Importante: ya reingresó, quitarlo de PENDIENTES_FLAT
+    proyectorparqueo.model.DatosApp.PENDIENTES_FLAT.remove(nuevo.getPlaca().toUpperCase());
+
+    // 7) Mostrar en el área de texto
+    java.time.format.DateTimeFormatter f =
+            java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
     txtAreaR.append(String.format(
-        "%n%n✅ Vehículo reingresado correctamente a %s (hora: %s)",
-        nuevo.getArea(), f.format(nuevo.getHoraIngreso())
+            "%n%n✅ Vehículo reingresado:%n" +
+            "Placa: %s%n" +
+            "Propietario: %s%n" +
+            "Plan: %s%n" +
+            "Rol: %s | Área: %s%n" +
+            "Hora reingreso: %s%n" +
+            "Tiempo fuera: %d minutos",
+            nuevo.getPlaca(),
+            nuevo.getPropietario(),
+            nuevo.getTipoPlan(),
+            nuevo.getRol(),
+            nuevo.getArea(),
+            nuevo.getHoraIngreso().format(f),
+            minutosFuera
     ));
+
     javax.swing.JOptionPane.showMessageDialog(this, "Reingreso registrado con éxito.");
     btnReingresar.setEnabled(false);
         // TODO add your handling code here:

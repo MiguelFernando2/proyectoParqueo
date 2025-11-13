@@ -48,7 +48,6 @@ public class FrmSalida extends javax.swing.JFrame {
         lblPlaca.setText("        PLACA:");
 
         txtPlaca.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
-        txtPlaca.setText("PARA INGRESAR PLACA");
 
         btnBuscar.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnBuscar.setText("BUSCAR");
