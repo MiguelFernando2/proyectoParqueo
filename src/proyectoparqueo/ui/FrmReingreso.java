@@ -150,9 +150,9 @@ public class FrmReingreso extends javax.swing.JFrame {
     if (plan.contains("FLAT")) {
         if (minutos <= 120) {
             puedeReingresarGratis = true;
-            mensaje = "✅ PLAN (FLAT): reingreso GRATUITO (dentro de las 2 horas).";
+            mensaje = " PLAN (FLAT): reingreso GRATUITO (dentro de las 2 horas).";
         } else {
-            mensaje = "⚠️ PLAN (FLAT): han pasado más de 2 horas.\n"
+            mensaje = "️ PLAN (FLAT): han pasado más de 2 horas.\n"
                     + "El plan se considera vencido, se cobrará nuevamente en un nuevo ingreso.";
         }
     } else {
@@ -165,7 +165,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         "TIPO: %s%n" +
         "PLAN: %s%n" +
         "ROL: %s%n" +
-        "ÁREA: %s%n" +
+        "AREA: %s%n" +
         "HORA SALIDA: %s%n" +
         "TIEMPO DESDE SALIDA: %d min%n%n" +
         "%s",
@@ -210,7 +210,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     if (!plan.contains("FLAT")) {
         javax.swing.JOptionPane.showMessageDialog(
                 this,
-                "El reingreso solo aplica para vehículos con PLAN (FLAT)."
+                "El reingreso solo aplica para vehiculos con PLAN (FLAT)."
         );
         return;
     }
@@ -223,7 +223,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     if (minutosFuera > 120) {
         javax.swing.JOptionPane.showMessageDialog(
                 this,
-                "Han pasado más de 2 horas desde la salida.\n"
+                "Han pasado mas de 2 horas desde la salida.\n"
               + "El plan FLAT se considera cancelado.\n"
               + "Debes registrarlo como un ingreso nuevo normal."
         );
@@ -237,7 +237,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     if (area != null && area.estaLlena()) {
         javax.swing.JOptionPane.showMessageDialog(
                 this,
-                "No hay cupo en el área " + area.getNombre() + " para reingresar."
+                "No hay cupo en el area " + area.getNombre() + " para reingresar."
         );
         return;
     }

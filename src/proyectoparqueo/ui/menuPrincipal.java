@@ -4,6 +4,8 @@
  */
 package proyectoparqueo.ui;
 
+import proyectorparqueo.model.DatosApp;
+
 /**
  *
  * @author DIEGO
@@ -15,6 +17,8 @@ public class menuPrincipal extends javax.swing.JFrame {
      */
     public menuPrincipal() {
         initComponents();
+        DatosApp.cargarDesdeSQL();
+        
     }
 
     /**
@@ -31,9 +35,12 @@ public class menuPrincipal extends javax.swing.JFrame {
         btnReingreso = new javax.swing.JButton();
         lblTituloM = new javax.swing.JLabel();
         btnReportes = new javax.swing.JButton();
+        btnCargarSQL = new javax.swing.JButton();
+        btnReporteHistorial = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
+        btnAbrirIngreso.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnAbrirIngreso.setText("REGISTRAR INGRESO");
         btnAbrirIngreso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -41,6 +48,7 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnAbrirSalida.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnAbrirSalida.setText("REGISTRAR SALIDA");
         btnAbrirSalida.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -48,6 +56,7 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnReingreso.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnReingreso.setText("REINGRESO");
         btnReingreso.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -58,6 +67,7 @@ public class menuPrincipal extends javax.swing.JFrame {
         lblTituloM.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         lblTituloM.setText("MENU PRINCIPAL");
 
+        btnReportes.setFont(new java.awt.Font("Segoe UI Black", 0, 14)); // NOI18N
         btnReportes.setText("REPORTES");
         btnReportes.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -65,38 +75,61 @@ public class menuPrincipal extends javax.swing.JFrame {
             }
         });
 
+        btnCargarSQL.setText("CARGAR SQL");
+        btnCargarSQL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargarSQLActionPerformed(evt);
+            }
+        });
+
+        btnReporteHistorial.setText("REPORTE HISTORIAL");
+        btnReporteHistorial.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnReporteHistorialActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(161, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(252, 252, 252)
-                        .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(76, 76, 76)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(btnReingreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnAbrirSalida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(310, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(160, 160, 160))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(btnCargarSQL, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnReingreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnAbrirSalida, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReportes, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnReporteHistorial, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addGap(20, 20, 20)
                 .addComponent(lblTituloM, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(45, 45, 45)
-                .addComponent(btnAbrirIngreso)
-                .addGap(27, 27, 27)
-                .addComponent(btnAbrirSalida)
-                .addGap(30, 30, 30)
-                .addComponent(btnReingreso)
+                .addGap(44, 44, 44)
+                .addComponent(btnAbrirIngreso, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnReportes)
-                .addContainerGap(239, Short.MAX_VALUE))
+                .addComponent(btnAbrirSalida, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReingreso, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReportes, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnReporteHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 145, Short.MAX_VALUE)
+                .addComponent(btnCargarSQL)
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -131,6 +164,25 @@ public class menuPrincipal extends javax.swing.JFrame {
         new FrmReportes().setVisible(true);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnReportesActionPerformed
+
+    private void btnCargarSQLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarSQLActionPerformed
+
+/*        DatosApp.cargarDesdeSQL();
+        javax.swing.JOptionPane.showMessageDialog(this,
+        "Datos cargados desde SQL correctamente.");
+    
+    // si tienes tablas en la UI, aquí llamas a los métodos que refrescan la JTable
+    // ej: actualizarTablaVehiculos();*/
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnCargarSQLActionPerformed
+
+    private void btnReporteHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnReporteHistorialActionPerformed
+
+            FrmHistorialSalidas f = new FrmHistorialSalidas();
+            f.setVisible(true);
+            f.setLocationRelativeTo(null); // centrar
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnReporteHistorialActionPerformed
 
     /**
      * @param args the command line arguments
@@ -170,7 +222,9 @@ public class menuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAbrirIngreso;
     private javax.swing.JButton btnAbrirSalida;
+    private javax.swing.JButton btnCargarSQL;
     private javax.swing.JButton btnReingreso;
+    private javax.swing.JButton btnReporteHistorial;
     private javax.swing.JButton btnReportes;
     private javax.swing.JLabel lblTituloM;
     // End of variables declaration//GEN-END:variables

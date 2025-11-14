@@ -4,8 +4,14 @@
  */
 package proyectoparqueo.ui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import proyectorparqueo.model.DatosApp;
+import proyectorparqueo.model.ReciboSalida;
+import proyectorparqueo.model.ReciboSalidaDAO;
 import proyectorparqueo.model.vehiculo;
 
 /**
@@ -96,6 +102,8 @@ public class FrmReportes extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnRefrescar = new javax.swing.JButton();
         lblResumen = new javax.swing.JLabel();
+        btnHistorialSQL = new javax.swing.JButton();
+        btnExportarCSV = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -150,34 +158,55 @@ public class FrmReportes extends javax.swing.JFrame {
 
         lblResumen.setText("PARA MOSTRAR TOTALES");
 
+        btnHistorialSQL.setText("HISTORIAL SQL");
+        btnHistorialSQL.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHistorialSQLActionPerformed(evt);
+            }
+        });
+
+        btnExportarCSV.setText("EXPORTAR SCV");
+        btnExportarCSV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExportarCSVActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 942, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGroup(layout.createSequentialGroup()
                                     .addGap(9, 9, 9)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addGap(36, 36, 36)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(jLabel2))
-                            .addGap(49, 49, 49)
                             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel3)
                                 .addGroup(layout.createSequentialGroup()
-                                    .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGap(43, 43, 43)
-                                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(79, Short.MAX_VALUE))
+                                    .addGap(29, 29, 29)
+                                    .addComponent(jLabel3)
+                                    .addGap(0, 0, Short.MAX_VALUE))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(18, 18, 18)
+                                    .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(btnRefrescar, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnHistorialSQL)
+                                    .addGap(326, 326, 326)
+                                    .addComponent(btnExportarCSV, javax.swing.GroupLayout.DEFAULT_SIZE, 146, Short.MAX_VALUE))))
+                        .addComponent(lblResumen, javax.swing.GroupLayout.PREFERRED_SIZE, 731, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,12 +221,14 @@ public class FrmReportes extends javax.swing.JFrame {
                     .addComponent(cmbTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbPlan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(cmbRol, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnRefrescar))
+                    .addComponent(btnRefrescar)
+                    .addComponent(btnHistorialSQL)
+                    .addComponent(btnExportarCSV))
                 .addGap(9, 9, 9)
                 .addComponent(lblResumen)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 297, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(100, Short.MAX_VALUE))
         );
 
         pack();
@@ -220,6 +251,21 @@ public class FrmReportes extends javax.swing.JFrame {
     private void cmbTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTipoActionPerformed
+
+    private void btnHistorialSQLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHistorialSQLActionPerformed
+        // Cargar estado desde SQL primero (por si abriste recién el programa)
+    proyectorparqueo.model.DatosApp.cargarDesdeSQL();
+
+    // Luego mostrar el historial completo en la tabla
+    cargarHistorialDesdeSQL();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnHistorialSQLActionPerformed
+
+    private void btnExportarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarCSVActionPerformed
+
+        exportarTablaACSV();
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnExportarCSVActionPerformed
 
     /**
      * @param args the command line arguments
@@ -257,6 +303,8 @@ public class FrmReportes extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnExportarCSV;
+    private javax.swing.JButton btnHistorialSQL;
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JComboBox<String> cmbPlan;
     private javax.swing.JComboBox<String> cmbRol;
@@ -509,5 +557,107 @@ private void actualizarResumenPorAreasYTotales(
     );
 
     lblResumen.setText(resumenHtml);
+}
+    private void cargarHistorialDesdeSQL() {
+    // Limpiar la tabla
+    javax.swing.table.DefaultTableModel m =
+        (javax.swing.table.DefaultTableModel) tblDatos.getModel();
+    m.setRowCount(0);
+
+    java.time.format.DateTimeFormatter fdt =
+        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+    double totalGeneral = 0.0;
+    int    contFilas    = 0;
+
+    // Pedimos TODOS los recibos de la BD
+    java.util.List<proyectorparqueo.model.ReciboSalida> lista =
+            proyectorparqueo.model.ReciboSalidaDAO.listarTodos();
+
+    for (proyectorparqueo.model.ReciboSalida r : lista) {
+        if (r == null || r.getVehiculo() == null) continue;
+
+        proyectorparqueo.model.vehiculo v = r.getVehiculo();
+
+        m.addRow(new Object[]{
+            v.getPlaca(),
+            v.getPropietario(),
+            v.getTipoVehiculo(),
+            v.getTipoPlan(),
+            v.getRol(),                      // en SQL no guardamos rol real, pero sirve para reporte
+            v.getArea(),                     // idem
+            r.getHoraSalida().format(fdt),   // aquí mostramos la HORA DE SALIDA
+            String.format("HISTORIAL (Q %.2f)", r.getTotal())
+        });
+
+        totalGeneral += r.getTotal();
+        contFilas++;
+    }
+
+    lblResumen.setText(String.format(
+        "HISTORIAL: %d registros | Total recaudado: Q %.2f",
+        contFilas, totalGeneral
+    ));
+}
+    private void exportarTablaACSV() {
+    javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
+    fc.setDialogTitle("Guardar reporte en CSV");
+    fc.setSelectedFile(new java.io.File("reporte_parqueo.csv"));
+
+    int sel = fc.showSaveDialog(this);
+    if (sel != javax.swing.JFileChooser.APPROVE_OPTION) {
+        return;
+    }
+
+    java.io.File archivo = fc.getSelectedFile();
+
+    try (java.io.PrintWriter pw = new java.io.PrintWriter(
+            new java.io.OutputStreamWriter(
+                    new java.io.FileOutputStream(archivo),
+                    java.nio.charset.StandardCharsets.UTF_8
+            ))) {
+
+        javax.swing.table.TableModel modelo = tblDatos.getModel();
+        int cols = modelo.getColumnCount();
+        int filas = modelo.getRowCount();
+
+        // Encabezados
+        for (int c = 0; c < cols; c++) {
+            String nombreCol = modelo.getColumnName(c);
+            pw.print(escaparCSV(nombreCol));
+            if (c < cols - 1) pw.print(",");
+        }
+        pw.println();
+
+        // Filas
+        for (int f = 0; f < filas; f++) {
+            for (int c = 0; c < cols; c++) {
+                Object val = modelo.getValueAt(f, c);
+                String texto = (val == null) ? "" : val.toString();
+                pw.print(escaparCSV(texto));
+                if (c < cols - 1) pw.print(",");
+            }
+            pw.println();
+        }
+
+        pw.flush();
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Reporte exportado correctamente a:\n" + archivo.getAbsolutePath());
+
+    } catch (Exception ex) {
+        javax.swing.JOptionPane.showMessageDialog(this,
+                "Error al exportar CSV:\n" + ex.getMessage());
+    }
+}
+
+private String escaparCSV(String s) {
+    if (s == null) return "";
+    boolean necesita = s.contains(",") || s.contains("\"") || s.contains("\n") || s.contains("\r");
+    if (necesita) {
+        s = s.replace("\"", "\"\"");
+        return "\"" + s + "\"";
+    } else {
+        return s;
+    }
 }
 }
