@@ -4,10 +4,7 @@
  */
 package proyectoparqueo.ui;
 
-import proyectorparqueo.model.DatosApp;
-import javax.swing.JOptionPane;
 import proyectorparqueo.model.VehiculoDAO;
-import proyectorparqueo.model.controlParqueo;
 import proyectorparqueo.model.vehiculo;
 /**
  *
@@ -243,14 +240,14 @@ public class FrmIngreso extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbTipoActionPerformed
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
-                // 1) Leer campos
+////////////////////// 1) Leer campos
         String placa       = txtPlaca.getText().trim();
         String propietario = txtPropietario.getText().trim();
         String tipo        = (String) cmbTipo.getSelectedItem();   // "MOTO" o "CARRO"
         String plan        = (String) cmbPlan.getSelectedItem();   // "PLAN (FLAT)" o "VARIABLE"
         String rol         = (String) cmbRol.getSelectedItem();    // "ESTUDIANTE" o "CATEDRATICO"
 
-    // 2) Validaciones básicas
+////////////////////// 2) Validaciones básicas
     if (placa.isEmpty() || propietario.isEmpty()) {
         javax.swing.JOptionPane.showMessageDialog(this, "Completa PLACA y PROPIETARIO.");
         return;
@@ -260,7 +257,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         return;
     }
 
-    // 2.5) Verificar si la placa ya está registrada en el sistema
+/////////////////////// 2.5) Verificar si la placa ya está registrada en el sistema
 
     proyectorparqueo.model.vehiculo yaDentro =
         proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(placa);
@@ -271,7 +268,7 @@ public class FrmIngreso extends javax.swing.JFrame {
     return; // no sigue registrando
 }
     
-    // 3) Reglas para asignar ÁREA
+////////////////////////// 3) Reglas para asignar ÁREA
     String areaNombre;
     if ("MOTO".equalsIgnoreCase(tipo)) {
         areaNombre = "MOTOS";
@@ -279,7 +276,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         areaNombre = "ESTUDIANTE".equalsIgnoreCase(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
     }
 
-    // 4) Validar cupo del área
+///////////////////////////// 4) Validar cupo del área
     proyectorparqueo.model.Area area = proyectorparqueo.model.DatosApp.getAreaPorNombre(areaNombre);
     if (area == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "Área inválida.");
@@ -294,12 +291,12 @@ public class FrmIngreso extends javax.swing.JFrame {
     if (rol.equals("ESTUDIANTES"))  rol = "ESTUDIANTE";
     if (rol.equals("CATEDRATICOS")) rol = "CATEDRATICO";
 
-    // 5) Crear y registrar el vehículo en el modelo global
+///////////////////////////////// 5) Crear y registrar el vehículo en el modelo global
     vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, areaNombre);
     proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
     VehiculoDAO.insertar(v);
     
-    // Cobro inmediato si es PLAN FLAT
+/////////////////////////////////// Cobro inmediato si es PLAN FLAT
     if (plan.toUpperCase().contains("FLAT")) {
         double montoFlat;
 
@@ -318,7 +315,7 @@ public class FrmIngreso extends javax.swing.JFrame {
     );
 }
 
-    // 6) Actualizar ocupación y alertar si ≥ 90%
+//////////////////////////////// 6) Actualizar ocupación y alertar si ≥ 90%
     area.setOcupados(area.getOcupados() + 1);
     double porc = proyectorparqueo.model.DatosApp.porcentajeOcupacion(area);
     if (porc >= 90.0) {
@@ -328,7 +325,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         );
     }
 
-    // 7) Mostrar resumen en el textarea
+//////////////////////////////// 7) Mostrar resumen en el textarea
     java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     txtArea.append(String.format(
         "Placa: %-8s | Prop: %-18s | Tipo: %-5s | Plan: %-12s | Rol: %-12s | Área: %-13s | Ingreso: %s%n",
@@ -364,7 +361,7 @@ public class FrmIngreso extends javax.swing.JFrame {
 
     private void btnCargarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarCSVActionPerformed
 
-        javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
+    javax.swing.JFileChooser fc = new javax.swing.JFileChooser();
     fc.setDialogTitle("Seleccionar archivo(s) CSV o carpeta");
     fc.setFileSelectionMode(javax.swing.JFileChooser.FILES_AND_DIRECTORIES);
     fc.setMultiSelectionEnabled(true);
@@ -378,7 +375,8 @@ public class FrmIngreso extends javax.swing.JFrame {
 
     java.io.File elegido = fc.getSelectedFile();
     if (elegido.isDirectory()) {
-        // buscar recursivamente *.csv
+        
+////////////////////////// buscar recursivamente *.csv
         java.util.Deque<java.io.File> pila = new java.util.ArrayDeque<>();
         pila.push(elegido);
         while (!pila.isEmpty()) {
@@ -404,11 +402,11 @@ public class FrmIngreso extends javax.swing.JFrame {
         return;
     }
 
-    // Contadores
+/////////////////////// Contadores
     int totalArchivos = 0, totalLineas = 0, aceptados = 0, rechazados = 0,
         duplicados = 0, sinCupo = 0, malFormados = 0;
 
-    // 💰 acumulador del dinero cobrado a planes FLAT
+///////////////////////// acumulador del dinero cobrado a planes FLAT
     double totalCobradoFlat = 0.0;
 
     txtArea.setText("");
@@ -434,26 +432,26 @@ public class FrmIngreso extends javax.swing.JFrame {
                 String[] c = linea.split(",");
                 for (int i = 0; i < c.length; i++) c[i] = c[i].trim();
 
-                if (c.length < 4) { // min: placa, propietario, tipo, plan
+                if (c.length < 4) { ///////////// min: placa, propietario, tipo, plan
                     malFormados++;
                     txtArea.append("  ! Línea mal formada: " + linea + "\n");
                     continue;
                 }
 
-                // Campos básicos
+////////////////////////// Campos básicos
                 String placa = c[0];
                 String propietario = c[1];
-                String tipo = c[2].toUpperCase();            // "MOTO"/"CARRO"
-                String plan = c[3].toUpperCase();            // "PLAN (FLAT)"/"TARIFA VARIABLE" u otros
+                String tipo = c[2].toUpperCase();            /// MOTO / CARRO
+                String plan = c[3].toUpperCase();            /// PLAN (FLAT) / TARIFA VARIABLE u otros
 
-                // Area y fecha (opcionales en tu CSV)
+////////////////////////////// Area y fecha (opcionales en tu CSV)
                 String areaCSV  = (c.length >= 5) ? c[4].toUpperCase() : "";
                 String fechaCSV = (c.length >= 6) ? c[5] : "";
 
-                // Normalizar plan posible sin espacio: "PLAN(FLAT)" -> "PLAN (FLAT)"
+/////////////////////////////// Normalizar plan posible sin espacio: "PLAN(FLAT)" -> "PLAN (FLAT)"
                 if ("PLAN(FLAT)".equals(plan)) plan = "PLAN (FLAT)";
 
-                // Derivar ROL/ÁREA coherentes con las reglas del proyecto
+///////////////////////////// Derivar ROL/ÁREA coherentes con las reglas del proyecto
                 String rol;
                 String area;
                 if ("MOTO".equals(tipo)) {
@@ -470,7 +468,7 @@ public class FrmIngreso extends javax.swing.JFrame {
                     area = "ESTUDIANTE".equals(rol) ? "ESTUDIANTES" : "CATEDRATICOS";
                 }
 
-                // Evitar duplicados (ya adentro)
+////////////////////////// Evitar duplicados (ya adentro)
                 if (proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(placa) != null) {
                     duplicados++;
                     rechazados++;
@@ -478,7 +476,7 @@ public class FrmIngreso extends javax.swing.JFrame {
                     continue;
                 }
 
-                // Respetar capacidad del área
+///////////////////////// Respetar capacidad del área
                 proyectorparqueo.model.Area a = proyectorparqueo.model.DatosApp.getAreaPorNombre(area);
                 if (a != null && a.estaLlena()) {
                     sinCupo++;
@@ -486,41 +484,41 @@ public class FrmIngreso extends javax.swing.JFrame {
                     txtArea.append("  x Sin cupo en " + area + " -> " + placa + "\n");
                     continue;
                 }
-                // Construir objeto vehiculo
+////////////////////////// Construir objeto vehiculo
 
                 proyectorparqueo.model.vehiculo v = new proyectorparqueo.model.vehiculo(        
                         placa, propietario, tipo, plan, true, rol, area
                 );
 
-// Si venía fecha en el CSV, intenta usarla
+/////////////////////////// Si venía fecha en el CSV, intenta usarla
                 if (!fechaCSV.isEmpty()) {
                     try {
                         java.time.LocalDateTime hi = java.time.LocalDateTime.parse(fechaCSV, iso);
                         v.setHoraIngreso(hi);
                     } catch (Exception ignore) {
-        // si falla, deja la hora actual
+///////////////////////7// si falla, deja la hora actual
                     }
                 }
 
-// 1) Registrar en memoria
+////////////////////// 1) Registrar en memoria
                 proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
                 if (a != null) a.setOcupados(a.getOcupados() + 1);
 
-// 2) Guardar en SQL 👇
+/////////////////////7 2) Guardar en SQL 
                 try {
                     proyectorparqueo.model.VehiculoDAO.insertar(v);
                 } catch (Exception ex) {
-    // opcional: para que no te detenga toda la carga por un error
+
                 System.err.println("Error guardando en SQL desde CSV (" + placa + "): " + ex.getMessage());
                 }
 
-// 3) Mensaje en el textarea
+/////////////////////////// 3) Mensaje en el textarea
                 aceptados++;
                 txtArea.append(String.format("  CARGADO %-8s | %-12s | %-15s | %-12s | AREA: %-13s | INGRESO: %s%n",
                         v.getPlaca(), v.getTipoVehiculo(), v.getTipoPlan(), rol, area, v.getHoraIngreso()
                 ));
 
-                // 💰 COBRO AL INGRESAR SI ES PLAN FLAT (Q40)
+///////////////////////////// COBRO AL INGRESAR SI ES PLAN FLAT (Q40)
                 if (plan.contains("FLAT")) {
                     double montoFlat = 40.0;
                     totalCobradoFlat += montoFlat;
@@ -538,7 +536,7 @@ public class FrmIngreso extends javax.swing.JFrame {
         }
     }
 
-    // actualizar estado de cupos (con FLAT pendientes + adentro, como ya tienes)
+///////////////////////////////// actualizar estado de cupos (con FLAT pendientes + adentro, como ya tienes)
     actualizarEstadoCupos();
 
     javax.swing.JOptionPane.showMessageDialog(this,
@@ -617,7 +615,7 @@ public class FrmIngreso extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     
-    // Devuelve un color CSS según el porcentaje de ocupación
+/////////////////////////////// Devuelve un color CSS según el porcentaje de ocupación
 private String colorCSS(double porc) {
     if (porc >= 90.0)      return "red";        // muy lleno
     else if (porc >= 80.0) return "orange";     // alto
@@ -626,7 +624,7 @@ private String colorCSS(double porc) {
 }
 
     private void actualizarEstadoCupos() {
-    // --- capacidades por área ---
+////////////////////////////////// capacidades por área 
     proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
     proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
     proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
@@ -635,10 +633,10 @@ private String colorCSS(double porc) {
     int capEst   = (aE == null) ? 0 : aE.getCapacidad();
     int capCat   = (aC == null) ? 0 : aC.getCapacidad();
 
-    // --- ocupación LÓGICA: adentro + FLAT pendientes ---
+///////////////////////////////////// ocupación LÓGICA: adentro + FLAT pendientes 
     int ocupMotos = 0, ocupEst = 0, ocupCat = 0;
 
-    // 1) Vehículos ADENTRO
+//////////////////////////// 1) Vehículos ADENTRO
     for (proyectorparqueo.model.vehiculo v :
             proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos()) {
 
@@ -649,7 +647,7 @@ private String colorCSS(double porc) {
         else if (areaV.equals("CATEDRATICOS")) ocupCat++;
     }
 
-    // 2) Vehículos FLAT PENDIENTES (salieron hace ≤2h y aún ocupan su cupo)
+/////////////////////////77// 2) Vehículos FLAT PENDIENTES (salieron hace ≤2h y aún ocupan su cupo)
     java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
 
     for (proyectorparqueo.model.ReciboSalida r :
@@ -664,7 +662,7 @@ private String colorCSS(double porc) {
         // Solo FLAT
         if (!planV.contains("FLAT")) continue;
 
-        // Si ya regresó, ya no cuenta como pendiente
+//////////////////////////////// Si ya regresó, ya no cuenta como pendiente
         if (proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(v.getPlaca()) != null) {
             continue;
         }
@@ -675,18 +673,18 @@ private String colorCSS(double porc) {
             continue; // ya no reserva lugar
         }
 
-        // Cuenta como ocupado en su área
+///////////////////////////7// Cuenta como ocupado en su área
         if (areaV.equals("MOTOS"))             ocupMotos++;
         else if (areaV.equals("ESTUDIANTES"))  ocupEst++;
         else if (areaV.equals("CATEDRATICOS")) ocupCat++;
     }
 
-    // --- porcentajes ---
+/////////////////////  porcentajes 
     double pMotos = (capMotos > 0) ? 100.0 * ocupMotos / capMotos : 0.0;
     double pEst   = (capEst   > 0) ? 100.0 * ocupEst   / capEst   : 0.0;
     double pCat   = (capCat   > 0) ? 100.0 * ocupCat   / capCat   : 0.0;
 
-    // 🔥 TEXTO CON HTML Y COLORES
+////////////////////// TEXTO CON HTML Y COLORES
     String html = String.format(
         "<html>" +
         "MOTOS: <span style='color:%s'>%d/%d (%.0f%%)</span> &nbsp; | " +
@@ -706,10 +704,10 @@ private void buscarArchivosCSV(java.io.File carpeta, java.util.List<java.io.File
     if (archivos != null) {
         for (java.io.File archivo : archivos) {
             if (archivo.isDirectory()) {
-                //  Busca recursivamente en las subcarpetas
+////////////////////  Busca recursivamente en las subcarpetas
                 buscarArchivosCSV(archivo, listaArchivos);
             } else if (archivo.getName().toLowerCase().endsWith(".csv")) {
-                //  Agrega solo los archivos .csv encontrados
+///////////////////////  Agrega solo los archivos .csv encontrados
                 listaArchivos.add(archivo);
             }
         }

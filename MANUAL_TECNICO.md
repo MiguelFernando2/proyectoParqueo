@@ -25,7 +25,7 @@ El sistema está desarrollado con arquitectura *Modelo – Vista – DAO*, divid
 
 ---
 
-### 📌 2.1 Paquetes Principales
+### 2.1 Paquetes Principales
 
 #### *1) proyectorparqueo.ui*
 Contiene todas las interfaces gráficas (formularios) desarrolladas con Swing:
@@ -60,7 +60,7 @@ Estas clases implementan consultas SQL mediante PreparedStatement.
 
 ---
 
-### 📌 2.2 Librerías Externas Utilizadas
+### 2.2 Librerías Externas Utilizadas
 
 - mssql-jdbc-13.2.1.jre11.jar
   - Permite conectar Java con SQL Server.
@@ -71,7 +71,7 @@ Estas clases implementan consultas SQL mediante PreparedStatement.
 
 ---
 
-### 📌 2.3 Flujo General del Sistema
+### 2.3 Flujo General del Sistema
 
 1. El usuario registra un vehículo desde la interfaz.
 2. Se valida el área, capacidad y plan.
@@ -86,7 +86,6 @@ El siguiente diagrama UML describe la arquitectura lógica del sistema Parqueo 2
 mostrando las clases principales del módulo de control de parqueo, el manejo de datos, 
 los modelos y las clases DAO conectadas a SQL Server.
 
-```mermaid
 classDiagram
 
 class vehiculo {

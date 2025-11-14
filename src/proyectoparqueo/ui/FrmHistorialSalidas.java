@@ -23,8 +23,7 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
         }, 0
     );
 
-    java.time.format.DateTimeFormatter f =
-        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     // Pedimos todos los recibos a la BD
     java.util.List<ReciboSalida> lista = ReciboSalidaDAO.listarTodos();
@@ -243,14 +242,13 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
 
     private void btnFiltrarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarFechaActionPerformed
 
-         String sDesde = txtDesde.getText().trim();
-    String sHasta = txtHasta.getText().trim();
+        String sDesde = txtDesde.getText().trim();
+        String sHasta = txtHasta.getText().trim();
 
-    if (sDesde.isEmpty() || sHasta.isEmpty()) {
-        javax.swing.JOptionPane.showMessageDialog(
-                this,
-                "Ingresa ambas fechas en formato yyyy-MM-dd.\nEjemplo: 2025-01-19"
-        );
+        if (sDesde.isEmpty() || sHasta.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(
+                this, "Ingresa ambas fechas en formato yyyy-MM-dd.\nEjemplo: 2025-01-19"
+            );
         return;
     }
 
@@ -288,7 +286,7 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
 
     private void btnExportarCSVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarCSVActionPerformed
 
-         // 1) Verificar que la tabla tenga datos
+    // 1) Verificar que la tabla tenga datos
     javax.swing.table.TableModel modelo = tblHistorial.getModel();
     int filas = modelo.getRowCount();
     int columnas = modelo.getColumnCount();
@@ -301,24 +299,25 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
         return;
     }
 
-    // 2) Elegir dónde guardar el archivo
+/////////////////// 2) Elegir dónde guardar el archivo
     javax.swing.JFileChooser chooser = new javax.swing.JFileChooser();
     chooser.setDialogTitle("Guardar historial como CSV");
     chooser.setSelectedFile(new java.io.File("HistorialSalidas.csv"));
 
     int opcion = chooser.showSaveDialog(this);
     if (opcion != javax.swing.JFileChooser.APPROVE_OPTION) {
-        return; // el usuario canceló
+        return; //////////////// el usuario canceló
     }
 
     java.io.File archivo = chooser.getSelectedFile();
-    // Asegurar extensión .csv
+    
+//////////////////////////// Asegurar extensión .csv
     String nombre = archivo.getAbsolutePath();
     if (!nombre.toLowerCase().endsWith(".csv")) {
         archivo = new java.io.File(nombre + ".csv");
     }
 
-    // 3) Escribir el CSV
+///////////// 3) Escribir el CSV
     try (java.io.PrintWriter pw = new java.io.PrintWriter(archivo, "UTF-8")) {
 
         // 3.1 Encabezados (nombres de columnas)
@@ -329,14 +328,14 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
         }
         pw.println(sb.toString());
 
-        // 3.2 Filas de datos
+/////////////// 3.2 Filas de datos
         for (int f = 0; f < filas; f++) {
             sb.setLength(0); // limpiar
             for (int c = 0; c < columnas; c++) {
                 Object valor = modelo.getValueAt(f, c);
                 String texto = (valor == null) ? "" : valor.toString();
 
-                // opcional: envolver en comillas por si tiene comas
+//////////////////// opcional: envolver en comillas por si tiene comas
                 if (texto.contains(",") || texto.contains("\"")) {
                     texto = texto.replace("\"", "\"\""); // escapar comillas
                     texto = "\"" + texto + "\"";
@@ -421,7 +420,7 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    // Ajusta el paquete/clase según tu proyecto
+    // Ajusta el paquete clase según proyecto
 private void llenarTablaHistorial(java.util.List<proyectorparqueo.model.ReciboSalida> lista) {
     javax.swing.table.DefaultTableModel m =
         (javax.swing.table.DefaultTableModel) tblHistorial.getModel();
@@ -474,20 +473,20 @@ private void llenarTablaHistorial(java.util.List<proyectorparqueo.model.ReciboSa
         double total = r.getTotal();
         totalGeneral += total;
 
-        // Según tipo de vehículo
+///////////////// Según tipo de vehículo
         if (r.getVehiculo().getTipoVehiculo().equalsIgnoreCase("MOTO"))
             totalMotos += total;
         else
-            totalCarro += total;   // si quieres motos + carros separado
+            totalCarro += total;   //motos + carros separado
 
-        // Según área (solo para reportes)
+///////////////// Según área (solo para reportes)
         String area = r.getVehiculo().getArea().toUpperCase();
         if (area.contains("ESTUDIANT"))
             totalEst += total;
         else if (area.contains("CATED"))
             totalCat += total;
 
-        // Según plan
+//////////////////// Según plan
         String plan = r.getVehiculo().getTipoPlan().toUpperCase();
         if (plan.contains("FLAT"))
             totalFlat += total;
@@ -495,7 +494,7 @@ private void llenarTablaHistorial(java.util.List<proyectorparqueo.model.ReciboSa
             totalVar += total;
     }
 
-    // Mostrar
+///////////////////// Mostrar
     lblTotalPeriodo.setText("Q " + String.format("%.2f", totalGeneral));
     lblTotalMotos.setText("Q " + String.format("%.2f", totalMotos));
     lblTotalEstudiantes.setText("Q " + String.format("%.2f", totalEst));
