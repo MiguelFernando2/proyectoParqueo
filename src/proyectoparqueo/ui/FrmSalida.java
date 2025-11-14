@@ -246,7 +246,7 @@ public class FrmSalida extends javax.swing.JFrame {
         .append("Tipo: ").append(r.getVehiculo().getTipoVehiculo()).append('\n')
         .append("Plan: ").append(r.getVehiculo().getTipoPlan()).append('\n')
         .append("Salida: ").append(r.getHoraSalida().format(f)).append('\n')
-        .append("Tiempo: ").append(r.getHorasRedondeadas()).append(" h (")
+        .append("Tiempo: ").append(r.getHoras()).append(" h (")
                              .append(r.getMinutos()).append(" min)\n")
         .append("Total Q: ").append(String.format("%.2f", r.getTotal())).append('\n')
         .append(r.getNota() == null ? "" : r.getNota())

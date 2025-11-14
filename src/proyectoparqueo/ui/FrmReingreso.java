@@ -9,6 +9,8 @@ import proyectorparqueo.model.vehiculo;
 import proyectorparqueo.model.DatosApp;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import javax.swing.JOptionPane;
+import proyectorparqueo.model.VehiculoDAO;
 
 /**
  *
@@ -241,8 +243,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     }
 
     // 5) Crear NUEVO vehículo con nueva hora de ingreso (ahora)
-    proyectorparqueo.model.vehiculo nuevo =
-            new proyectorparqueo.model.vehiculo(
+    proyectorparqueo.model.vehiculo nuevo = new proyectorparqueo.model.vehiculo(
                     v.getPlaca(),
                     v.getPropietario(),
                     v.getTipoVehiculo(),
@@ -252,6 +253,11 @@ public class FrmReingreso extends javax.swing.JFrame {
                     v.getRol(),
                     v.getArea()
             );
+    
+    //GUARDA EN MEMORIA
+    DatosApp.PARQUEO.registrarVehiculo(nuevo);
+    VehiculoDAO.insertar(nuevo); // GUARDARLO EN SQL
+    JOptionPane.showMessageDialog(this, "REINGRESO REGISTRADO CORRECTAMENTE");
 
     // 6) Registrar en el parqueo y actualizar ocupación
     proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(nuevo);

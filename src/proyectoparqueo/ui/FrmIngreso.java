@@ -6,6 +6,7 @@ package proyectoparqueo.ui;
 
 import proyectorparqueo.model.DatosApp;
 import javax.swing.JOptionPane;
+import proyectorparqueo.model.VehiculoDAO;
 import proyectorparqueo.model.controlParqueo;
 import proyectorparqueo.model.vehiculo;
 /**
@@ -296,6 +297,7 @@ public class FrmIngreso extends javax.swing.JFrame {
     // 5) Crear y registrar el vehículo en el modelo global
     vehiculo v = new vehiculo(placa, propietario, tipo, plan, true, rol, areaNombre);
     proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
+    VehiculoDAO.insertar(v);
     
     // Cobro inmediato si es PLAN FLAT
     if (plan.toUpperCase().contains("FLAT")) {
@@ -484,35 +486,38 @@ public class FrmIngreso extends javax.swing.JFrame {
                     txtArea.append("  x Sin cupo en " + area + " -> " + placa + "\n");
                     continue;
                 }
-
                 // Construir objeto vehiculo
-                proyectorparqueo.model.vehiculo v = new proyectorparqueo.model.vehiculo(
+
+                proyectorparqueo.model.vehiculo v = new proyectorparqueo.model.vehiculo(        
                         placa, propietario, tipo, plan, true, rol, area
                 );
 
-                // Si venía fecha en el CSV, intenta usarla
+// Si venía fecha en el CSV, intenta usarla
                 if (!fechaCSV.isEmpty()) {
                     try {
                         java.time.LocalDateTime hi = java.time.LocalDateTime.parse(fechaCSV, iso);
                         v.setHoraIngreso(hi);
                     } catch (Exception ignore) {
-                        // si falla, deja la hora actual
+        // si falla, deja la hora actual
                     }
                 }
 
-                // Registrar y actualizar ocupación
+// 1) Registrar en memoria
                 proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(v);
                 if (a != null) a.setOcupados(a.getOcupados() + 1);
 
+// 2) Guardar en SQL 👇
+                try {
+                    proyectorparqueo.model.VehiculoDAO.insertar(v);
+                } catch (Exception ex) {
+    // opcional: para que no te detenga toda la carga por un error
+                System.err.println("Error guardando en SQL desde CSV (" + placa + "): " + ex.getMessage());
+                }
+
+// 3) Mensaje en el textarea
                 aceptados++;
-                txtArea.append(String.format(
-                        "  CARGADO %-8s | %-12s | %-15s | %-12s | AREA: %-13s | INGRESO: %s%n",
-                        v.getPlaca(),
-                        v.getTipoVehiculo(),
-                        v.getTipoPlan(),
-                        rol,
-                        area,
-                        v.getHoraIngreso()
+                txtArea.append(String.format("  CARGADO %-8s | %-12s | %-15s | %-12s | AREA: %-13s | INGRESO: %s%n",
+                        v.getPlaca(), v.getTipoVehiculo(), v.getTipoPlan(), rol, area, v.getHoraIngreso()
                 ));
 
                 // 💰 COBRO AL INGRESAR SI ES PLAN FLAT (Q40)

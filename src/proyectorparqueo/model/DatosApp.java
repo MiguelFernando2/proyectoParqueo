@@ -4,6 +4,7 @@
  */
 package proyectorparqueo.model;
 
+import proyectorparqueo.model.VehiculoDAO;
 import java.time.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,47 +53,70 @@ public class DatosApp {
 
     // === Registrar SALIDA y devolver Recibo ===
 
-    public static ReciboSalida registrarSalida(String placa) {
+public static ReciboSalida registrarSalida(String placa) {
     vehiculo v = PARQUEO.buscarPorPlaca(placa);
     if (v == null) return null;
 
-    // ↓↓↓ ya lo tenías, no lo borres
+    // 1) Actualizar ocupados físicos del área (adentro)
     Area area = getAreaPorNombre(v.getArea());
     if (area != null && area.getOcupados() > 0) {
         area.setOcupados(area.getOcupados() - 1);
     }
 
+    // 2) Calcular tiempos
     LocalDateTime salida = LocalDateTime.now();
     long minutos = Duration.between(v.getHoraIngreso(), salida).toMinutes();
-    long horas = (minutos + 59) / 60;
+    long horas = (minutos + 59) / 60;   // redondeo hacia arriba
     if (horas == 0) horas = 1;
 
     double total = 0.0;
-    String nota = "";
-    String plan = v.getTipoPlan() == null ? "" : v.getTipoPlan().toUpperCase();
+    String nota  = "";
+    String plan  = (v.getTipoPlan() == null) ? "" : v.getTipoPlan().toUpperCase();
 
+    // monto que se cobró en el ingreso por ser PLAN FLAT
+    double montoFlat = v.getTipoVehiculo().equalsIgnoreCase("MOTO")
+            ? 25.0        // Q25 para moto
+            : 40.0;       // Q40 para carro
+
+    // 3) Lógica según plan
     if (plan.contains("FLAT")) {
-        // 👉 guardar como "pendiente" mientras está en ventana de 2h
+        // PLAN (FLAT): ya pagó al ingresar
+
         if (minutos <= 120) {
+            // Sale pero todavía está dentro de la ventana de 2 horas
             PENDIENTES_FLAT.put(placa.toUpperCase(), salida);
-            nota = "PLAN (FLAT): salida dentro de 2 horas, reingreso pendiente.";
+            nota = "PLAN (FLAT): pagó Q " + montoFlat +
+                   " al ingresar. Salida dentro de 2 horas, reingreso permitido.";
         } else {
-            // si ya pasó de 2h, que no quede pendiente
+            // Más de 2h fuera: se considera que el plan terminó
             PENDIENTES_FLAT.remove(placa.toUpperCase());
-            nota = "PLAN (FLAT): ya habías pagado al ingresar. Más de 2 horas fuera: plan se considera terminado.";
+            nota = "PLAN (FLAT): pagó Q " + montoFlat +
+                   " al ingresar. Más de 2 horas fuera: plan finalizado.";
         }
-        // No se cobra en la salida
+
+        // 🔴 Guardamos en el recibo lo que realmente se pagó
+        total = montoFlat;
+
     } else {
+        // VARIABLE: cobrar por horas
         double tarifa = v.getTipoVehiculo().equalsIgnoreCase("MOTO")
                 ? TARIFA_MOTO_POR_HORA
                 : TARIFA_CARRO_POR_HORA;
         total = horas * tarifa;
     }
 
+    // 4) Sacar del parqueo (ya no está físicamente adentro)
     PARQUEO.eliminarVehiculo(placa);
 
+    // 5) Crear recibo
     ReciboSalida r = new ReciboSalida(v, salida, minutos, horas, total, nota);
+
+    // Guardar en memoria
     HISTORIAL_SALIDAS.add(r);
+
+    // 6) Guardar en BD
+    ReciboSalidaDAO.insertar(r);         // Inserta el recibo
+    VehiculoDAO.eliminarPorPlaca(placa); // Borra el vehículo de la tabla Vehiculo
 
     return r;
 }

@@ -14,7 +14,7 @@ public class ReciboSalida {
     public final vehiculo vehiculo;
     public final LocalDateTime horaSalida;
     public final long minutos;
-    public final long horasRedondeadas;
+    public final long horas;
     public final double total;
     public final String nota; //valides del plan
     
@@ -22,7 +22,7 @@ public class ReciboSalida {
      this.vehiculo = v;
      this.horaSalida = out;
      this.minutos = mins;
-     this.horasRedondeadas = hrs;
+     this.horas = hrs;
      this.total = total;
      this.nota = nota;
     }
@@ -39,8 +39,8 @@ public class ReciboSalida {
         return minutos;
     }
 
-    public long getHorasRedondeadas() {
-        return horasRedondeadas;
+    public long getHoras() {
+        return horas;
     }
 
     public double getTotal() {
