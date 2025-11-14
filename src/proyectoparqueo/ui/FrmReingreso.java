@@ -49,8 +49,10 @@ public class FrmReingreso extends javax.swing.JFrame {
         lblTituloR.setFont(new java.awt.Font("Segoe UI Black", 0, 36)); // NOI18N
         lblTituloR.setText("REGISTRO DE VEHICULO");
 
+        lblPlacaR.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         lblPlacaR.setText("PLACA");
 
+        btnBuscarR.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         btnBuscarR.setText("BUSCAR");
         btnBuscarR.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -58,8 +60,10 @@ public class FrmReingreso extends javax.swing.JFrame {
             }
         });
 
+        btnLimpiarR.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         btnLimpiarR.setText("LIMPIAR");
 
+        btnReingresar.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         btnReingresar.setText("REINGRESAR");
         btnReingresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -78,24 +82,26 @@ public class FrmReingreso extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(103, 103, 103)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(JScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(200, 200, 200)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtPlacaR, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lblTituloR, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(103, 103, 103)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(JScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 703, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(97, 97, 97)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(lblTituloR, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txtPlacaR, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnReingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(lblPlacaR, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(149, 149, 149)
-                                .addComponent(btnBuscarR, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(29, 29, 29)
-                                .addComponent(btnReingresar, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(30, 30, 30)
-                                .addComponent(btnLimpiarR, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(btnBuscarR, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(50, 50, 50)
+                        .addComponent(btnLimpiarR, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(116, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -112,7 +118,7 @@ public class FrmReingreso extends javax.swing.JFrame {
                     .addComponent(btnReingresar))
                 .addGap(18, 18, 18)
                 .addComponent(JScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 321, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(106, Short.MAX_VALUE))
+                .addContainerGap(103, Short.MAX_VALUE))
         );
 
         pack();
@@ -127,8 +133,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     }
 
     // 👉 Usar la última salida registrada
-    proyectorparqueo.model.ReciboSalida r =
-            proyectorparqueo.model.DatosApp.ultimaSalidaDe(placa);
+    proyectorparqueo.model.ReciboSalida r = proyectorparqueo.model.DatosApp.ultimaSalidaDe(placa);
 
     if (r == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "No hay registro previo de salida para esta placa.");
@@ -260,7 +265,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     JOptionPane.showMessageDialog(this, "REINGRESO REGISTRADO CORRECTAMENTE");
 
     // 6) Registrar en el parqueo y actualizar ocupación
-    proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(nuevo);
+   // proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(nuevo);
     if (area != null) {
         area.setOcupados(area.getOcupados() + 1);
     }

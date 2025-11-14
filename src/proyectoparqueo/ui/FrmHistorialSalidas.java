@@ -8,6 +8,7 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import proyectorparqueo.model.ReciboSalida;
 import proyectorparqueo.model.ReciboSalidaDAO;
+import proyectorparqueo.model.vehiculo;
 
 /**
  *
@@ -26,7 +27,9 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
     java.time.format.DateTimeFormatter f = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
     // Pedimos todos los recibos a la BD
+        // Pedir todo a la BD y usar SIEMPRE el método que elimina duplicados
     java.util.List<ReciboSalida> lista = ReciboSalidaDAO.listarTodos();
+    llenarTablaHistorial(lista);
 
     for (ReciboSalida r : lista) {
         if (r == null || r.getVehiculo() == null) continue;
@@ -84,9 +87,16 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
         lblTotalCatedraticos = new javax.swing.JLabel();
         lblTotalFlat = new javax.swing.JLabel();
         lblTotalVariable = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
+        btnCargarHistorial.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         btnCargarHistorial.setText("CARGAR HISTORIAL");
         btnCargarHistorial.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,6 +104,7 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
             }
         });
 
+        btnExportarCSV.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         btnExportarCSV.setText("EXPORTAR CSV");
         btnExportarCSV.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -101,12 +112,16 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
             }
         });
 
+        lblResumenHistorial.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         lblResumenHistorial.setText("RESUMEN HISTORIAL");
 
+        jLabelDesde.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         jLabelDesde.setText("DESDE");
 
+        jLebelHasta.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         jLebelHasta.setText("HASTA");
 
+        btnFiltrarFecha.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
         btnFiltrarFecha.setText("FILTRAR POR FECHA");
         btnFiltrarFecha.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -125,6 +140,7 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
 
         lblTotalPeriodo.setText("TOTAL PERIODO");
 
+        tblHistorial.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
         tblHistorial.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
@@ -148,6 +164,24 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
 
         lblTotalVariable.setText("TOTAL VARIABLE");
 
+        jLabel1.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
+        jLabel1.setText("TOTAL");
+
+        jLabel2.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
+        jLabel2.setText("TOTAL MOTO");
+
+        jLabel3.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
+        jLabel3.setText("ESTUDIANTE");
+
+        jLabel4.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
+        jLabel4.setText("CATEDRATICO");
+
+        jLabel5.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
+        jLabel5.setText("TOTAL FLAT");
+
+        jLabel6.setFont(new java.awt.Font("Showcard Gothic", 0, 12)); // NOI18N
+        jLabel6.setText("VARIABLE");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -161,35 +195,51 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
                                 .addComponent(btnCargarHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btnExportarCSV, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(37, 37, 37))
+                                .addGap(49, 49, 49))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                                        .addComponent(lblTotalPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(lblTotalMotos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addComponent(lblTotalPeriodo, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(lblTotalMotos, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(23, 23, 23))
+                                    .addGroup(layout.createSequentialGroup()
                                         .addComponent(lblResumenHistorial, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(24, 24, 24)
-                                        .addComponent(jLabelDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabelDesde, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(txtDesde)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(lblTotalEstudiantes)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                        .addComponent(lblTotalCatedraticos, javax.swing.GroupLayout.PREFERRED_SIZE, 126, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblTotalEstudiantes, javax.swing.GroupLayout.PREFERRED_SIZE, 49, Short.MAX_VALUE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(lblTotalCatedraticos, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLebelHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(71, 71, 71)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(jLebelHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(txtHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(btnFiltrarFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblTotalFlat, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtHasta, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(btnFiltrarFecha, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblTotalFlat, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblTotalVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(lblTotalVariable, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(jScrollPane2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 16, Short.MAX_VALUE)
@@ -217,7 +267,13 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
                     .addComponent(lblTotalEstudiantes)
                     .addComponent(lblTotalCatedraticos)
                     .addComponent(lblTotalFlat)
-                    .addComponent(lblTotalVariable))
+                    .addComponent(lblTotalVariable)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4)
+                    .addComponent(jLabel5)
+                    .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -234,21 +290,21 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
 
     private void btnCargarHistorialActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarHistorialActionPerformed
 
-        FrmHistorialSalidas f = new FrmHistorialSalidas();
-        f.setLocationRelativeTo(this);
-        f.setVisible(true);
+        List<ReciboSalida> lista = ReciboSalidaDAO.listarTodos();
+        llenarTablaHistorial(lista);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCargarHistorialActionPerformed
 
     private void btnFiltrarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarFechaActionPerformed
 
-        String sDesde = txtDesde.getText().trim();
-        String sHasta = txtHasta.getText().trim();
+    String sDesde = txtDesde.getText().trim();
+    String sHasta = txtHasta.getText().trim();
 
-        if (sDesde.isEmpty() || sHasta.isEmpty()) {
-            javax.swing.JOptionPane.showMessageDialog(
-                this, "Ingresa ambas fechas en formato yyyy-MM-dd.\nEjemplo: 2025-01-19"
-            );
+    if (sDesde.isEmpty() || sHasta.isEmpty()) {
+        javax.swing.JOptionPane.showMessageDialog(
+            this,
+            "Ingresa ambas fechas en formato yyyy-MM-dd.\nEjemplo: 2025-01-19"
+        );
         return;
     }
 
@@ -266,10 +322,9 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
                 proyectorparqueo.model.ReciboSalidaDAO.listarPorRango(dtDesde, dtHasta);
 
         // 4) Llenar tabla con los datos filtrados
+        //    (dentro de este método ya se quitarán placas repetidas
+        //     y se actualizarán los totales)
         llenarTablaHistorial(lista);
-
-        // 5) Actualizar todos los totales (período, motos, flat, etc.)
-        actualizarTotalesPeriodo(lista);
 
     } catch (Exception ex) {
         javax.swing.JOptionPane.showMessageDialog(
@@ -403,6 +458,12 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
     private javax.swing.JButton btnCargarHistorial;
     private javax.swing.JButton btnExportarCSV;
     private javax.swing.JButton btnFiltrarFecha;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabelDesde;
     private javax.swing.JLabel jLebelHasta;
     private javax.swing.JScrollPane jScrollPane1;
@@ -421,43 +482,62 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
 
 
     // Ajusta el paquete clase según proyecto
-private void llenarTablaHistorial(java.util.List<proyectorparqueo.model.ReciboSalida> lista) {
-    javax.swing.table.DefaultTableModel m =
-        (javax.swing.table.DefaultTableModel) tblHistorial.getModel();
-    m.setRowCount(0);
+   private void llenarTablaHistorial(java.util.List<ReciboSalida> lista) {
 
-    java.time.format.DateTimeFormatter fdt =
-        java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    // 1) Crear modelo con las columnas correctas
+    javax.swing.table.DefaultTableModel modelo = new javax.swing.table.DefaultTableModel(
+        new Object[]{
+            "Placa", "Propietario", "Tipo", "Plan",
+            "Hora ingreso", "Hora salida",
+            "Minutos", "Horas", "Total", "Nota"
+        }, 0
+    );
 
-    for (proyectorparqueo.model.ReciboSalida r : lista) {
-        proyectorparqueo.model.vehiculo v = r.getVehiculo();
+    // 2) Mapa para quedarnos solo con una fila por placa
+    java.util.Map<String, ReciboSalida> mapaPorPlaca = new java.util.LinkedHashMap<>();
 
-        String placa       = (v == null) ? "" : v.getPlaca();
-        String propietario = (v == null) ? "" : v.getPropietario();
-        String tipo        = (v == null) ? "" : v.getTipoVehiculo();
-        String plan        = (v == null) ? "" : v.getTipoPlan();
+    for (ReciboSalida r : lista) {
+        if (r == null || r.getVehiculo() == null) continue;
 
-        String hIng = (v == null || v.getHoraIngreso() == null)
-                      ? ""
-                      : v.getHoraIngreso().format(fdt);
+        String placa = r.getVehiculo().getPlaca();
+        if (placa == null) continue;
 
-        String hSal = (r.getHoraSalida() == null)
-                      ? ""
-                      : r.getHoraSalida().format(fdt);
+        String clave = placa.toUpperCase();
 
-        m.addRow(new Object[]{
-            placa,
-            propietario,
-            tipo,
-            plan,
-            hIng,
-            hSal,
-            r.getHoras(),
-            String.format("Q %.2f", r.getTotal()),
-            r.getNota()
-        });
+        // ✅ Si ya existe esa placa, la ignoramos (solo dejamos la primera)
+        if (!mapaPorPlaca.containsKey(clave)) {
+            mapaPorPlaca.put(clave, r);
+        }
+        // Si quisieras conservar la ÚLTIMA, sería: mapaPorPlaca.put(clave, r);
     }
+
+    // 3) Llenar tabla con la lista SIN duplicados
+    for (ReciboSalida r : mapaPorPlaca.values()) {
+        vehiculo v = r.getVehiculo();
+
+        Object[] fila = new Object[]{
+            v.getPlaca(),
+            v.getPropietario(),
+            v.getTipoVehiculo(),
+            v.getTipoPlan(),
+            v.getHoraIngreso(),
+            r.getHoraSalida(),
+            r.getMinutos(),
+            r.getHoras(),
+            r.getTotal(),
+            r.getNota()
+        };
+
+        modelo.addRow(fila);
+    }
+
+    // 4) Asignar modelo a la tabla
+    tblHistorial.setModel(modelo);
+
+    // 5) Actualizar totales usando la lista sin duplicados
+    actualizarTotalesPeriodo(new java.util.ArrayList<>(mapaPorPlaca.values()));
 }
+    
     private void actualizarTotalesPeriodo(List<ReciboSalida> lista) {
 
     double totalGeneral = 0;
