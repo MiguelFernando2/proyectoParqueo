@@ -6,10 +6,11 @@ package proyectorparqueo.model;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-
 import java.io.*;
 import java.io.IOException;
 import java.util.ArrayList;
+
+//////////////////LOGICA PRINCIPAL CONTROLA SOLO LO QUE ESTA DENTRO DEL PARQUEONEN MEMORIA
 
 /**
  *

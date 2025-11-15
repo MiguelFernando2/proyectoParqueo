@@ -4,6 +4,8 @@
  */
 package proyectorparqueo.model;
 
+//////////CLASE MAS IMPORTANTE 
+
 import java.time.LocalDateTime;
 
 /**

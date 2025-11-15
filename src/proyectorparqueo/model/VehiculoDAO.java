@@ -4,6 +4,9 @@
  */
 package proyectorparqueo.model;
 
+
+// GUARDAN Y LEE SQL
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

@@ -11,6 +11,8 @@ import proyectorparqueo.model.vehiculo;
  * @author DIEGO
  */
 
+/////////////////RECIBE DATOS  USA PARQUEO.registrar vehiculo,    insertar en SQL
+
 public class FrmIngreso extends javax.swing.JFrame {
     
     /**

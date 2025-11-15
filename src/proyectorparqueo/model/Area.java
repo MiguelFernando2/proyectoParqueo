@@ -4,13 +4,15 @@
  */
 package proyectorparqueo.model;
 
+//////////CONTROLA EL ESPACIO DEL PARQUEO
+
 /**
  *
  * @author DIEGO
  */
 public class Area {
     
-    // Atributoss
+    // Atributos
     public String id;
     public String nombre;
     public int capacidad;

@@ -14,6 +14,9 @@ import proyectorparqueo.model.vehiculo;
  *
  * @author DIEGO
  */
+
+/////////////////CARGA TODAS LAS HISTORIAS       FILTRA POR CHAT        CALCULA TOTAL
+
 public class FrmHistorialSalidas extends javax.swing.JFrame {
     private void cargarHistorialCompleto() {
     DefaultTableModel modelo = new DefaultTableModel(
@@ -322,7 +325,7 @@ public class FrmHistorialSalidas extends javax.swing.JFrame {
                 proyectorparqueo.model.ReciboSalidaDAO.listarPorRango(dtDesde, dtHasta);
 
         // 4) Llenar tabla con los datos filtrados
-        //    (dentro de este método ya se quitarán placas repetidas
+////////////////dentro de este método ya se quitarán placas repetidas
         //     y se actualizarán los totales)
         llenarTablaHistorial(lista);
 

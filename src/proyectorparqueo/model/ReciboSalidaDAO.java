@@ -14,9 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 
+//////GUARDA Y LEE SQL
+
 public class ReciboSalidaDAO {
 
-    // ========== SENTENCIAS SQL ==========
+    /////// SENTENCIAS SQL 
     private static final String SQL_INSERT =
         "INSERT INTO ReciboSalida " +
         " (placa, propietario, tipoVehiculo, tipoPlan, " +
@@ -55,7 +57,7 @@ public class ReciboSalidaDAO {
             ps.setString(10, r.getNota());
 
             ps.executeUpdate();
-            System.out.println("✔ ReciboSalida guardado en SQL (placa: " + v.getPlaca() + ")");
+            System.out.println("  ReciboSalida guardado en SQL (placa: " + v.getPlaca() + ")");
 
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(

@@ -4,6 +4,9 @@
  */
 package proyectorparqueo.model;
 
+
+/////////////EL CEREBRO QUE UNE TODO   MANEJA FLAT, TOTALES CALCU HORAS   GUAR SALIDAS
+
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -52,6 +55,7 @@ public class DatosApp {
     }
 
     //  CARGAR ESTADO DESDE LA BASE DE DATOS
+    // GUARDA PLACAS QUE SALIERON HACE MENOS DE 2 HORAS
     public static void cargarDesdeSQL() {
 
         // 0) Limpiar vehículos actuales del parqueo (evitar duplicados)
@@ -94,6 +98,9 @@ public class DatosApp {
 
 
     //  REGISTRAR SALIDA Y CREAR RECIBO
+    // BUACA EL VEHICULO POR PLACA, CALCULA EL TIEMPO DECIDE SI COBRA VARAINLE O FLAT, SI ES FLAT DECIDE 
+    // SI ENTRA A PENDIENTE, GUARDA RECIBO EN SQL
+    //
 
     public static ReciboSalida registrarSalida(String placa) {
         vehiculo v = PARQUEO.buscarPorPlaca(placa);

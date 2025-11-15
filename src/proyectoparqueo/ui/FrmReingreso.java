@@ -12,6 +12,8 @@ import proyectorparqueo.model.VehiculoDAO;
  *
  * @author DIEGO
  */
+
+//////////////// PERMITE ENTRAR DE NUEVO SIN COBRAR , SI USASTE FLAT
 public class FrmReingreso extends javax.swing.JFrame {
 
     /**

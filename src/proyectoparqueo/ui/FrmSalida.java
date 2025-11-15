@@ -12,6 +12,9 @@ import java.time.format.DateTimeFormatter;
  *
  * @author DIEGO
  */
+
+//////////////DatosApp.registrarSalida     muetra ticket     limpia pantalla
+
 public class FrmSalida extends javax.swing.JFrame {
 
     /**
