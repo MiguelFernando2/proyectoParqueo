@@ -4,15 +4,8 @@
  */
 package proyectoparqueo.ui;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
-import proyectorparqueo.model.DatosApp;
-import proyectorparqueo.model.ReciboSalida;
-import proyectorparqueo.model.ReciboSalidaDAO;
-import proyectorparqueo.model.vehiculo;
 
 /**
  *
@@ -62,23 +55,18 @@ public class FrmReportes extends javax.swing.JFrame {
     }
 });
 
-        // Los combos ya tienen valores desde el diseñador:
-        //  cmbTipo  -> { "TODOS", "CARRO", "MOTO" }
-        //  cmbPlan  -> { "TODOS", "PLAN (FLAT)", "TARIFA VARIABLE" }
-        //  cmbRol   -> { "TODOS", "ESTUDIANTES", "CATEDRATICOS" }
-
-        // Por si acaso, dejamos el plan EXACTO como lo usamos en el código:
+////////////////////// Por si acaso, dejamos el plan EXACTO como lo usamos en el código:
         cmbPlan.setModel(new javax.swing.DefaultComboBoxModel<>(
             new String[] { "TODOS", "PLAN (FLAT)", "TARIFA VARIABLE" }
         ));
 
-        // Filtros: cada vez que cambie algo, refresca la tabla
+//////////////////////// Filtros: cada vez que cambie algo, refresca la tabla
         cmbTipo.addActionListener(e -> refrescarTabla());
         cmbPlan.addActionListener(e -> refrescarTabla());
         cmbRol.addActionListener(e -> refrescarTabla());
         btnRefrescar.addActionListener(e -> refrescarTabla());
 
-        // Primer llenado
+///////////////////// Primer llenado
         refrescarTabla();
     }
     
@@ -341,20 +329,19 @@ public class FrmReportes extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
 
-    // Devuelve un color CSS según el porcentaje de ocupación
-    // Devuelve el color en texto CSS según el porcentaje
+////////////////////// Devuelve el color en texto CSS según el porcentaje
 private String colorCSS(double porcentaje) {
     if (porcentaje >= 90.0) return "#dc3545"; // rojo
     if (porcentaje >= 80.0) return "#fd7e14"; // naranja
     if (porcentaje >= 60.0) return "#ffc107"; // amarillo
     return "#28a745";                         // verde
 }
-    // En FrmReportes.java (fuera de cualquier otro método)
+////////////// En FrmReportes.java (fuera de cualquier otro método)
 
 private void actualizarResumenPorAreasYTotales(
         int totalMostrados, int cMoto, int cCarro, int cFlat, int cVar, int totalSistema) {
 
-    // 1) Obtener áreas del modelo
+///////////////// 1) Obtener áreas del modelo
     proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
     proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
     proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
@@ -372,7 +359,7 @@ private void actualizarResumenPorAreasYTotales(
     double pE = (capE > 0) ? 100.0 * ocE / capE : 0.0;
     double pC = (capC > 0) ? 100.0 * ocC / capC : 0.0;
 
-    // 2) Construir texto HTML con colores por área
+/////////////////////// 2) Construir texto HTML con colores por área
     String html = String.format(
         "<html>" +
         "Mostrados: %d | Motos: %d | Carros: %d | Flat: %d | Variable: %d | Total registrados: %d" +
@@ -387,15 +374,15 @@ private void actualizarResumenPorAreasYTotales(
         colorCSS(pC), ocC, capC, pC
     );
 
-    lblResumen.setText(html);   // 👉 aquí se aplican los colores HTML
+    lblResumen.setText(html);   //////////////7 aquí se aplican los colores HTML
 }
     private void refrescarTabla() {
-    // --- filtros desde los combos ---
+///////////////////// filtros desde los combos
     String fTipo = safeUpper((String) cmbTipo.getSelectedItem());  // "TODOS"/"CARRO"/"MOTO"
     String fPlan = safeUpper((String) cmbPlan.getSelectedItem());  // "TODOS"/"PLAN (FLAT)"/"TARIFA VARIABLE"
     String fRol  = safeUpper((String) cmbRol.getSelectedItem());   // "TODOS"/"ESTUDIANTES"/"CATEDRATICOS"
 
-    // Normalizar ROL para comparar con lo que guarda vehiculo
+////////////////7// Normalizar ROL para comparar con lo que guarda vehiculo
     if (fRol.equals("ESTUDIANTES"))  fRol = "ESTUDIANTE";
     if (fRol.equals("CATEDRATICOS")) fRol = "CATEDRATICO";
 
@@ -406,18 +393,16 @@ private void actualizarResumenPorAreasYTotales(
     java.time.format.DateTimeFormatter fdt =
             java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // Contadores globales (solo de lo que se muestra)
+/////////// Contadores globales (solo de lo que se muestra)
     int cMoto = 0, cCarro = 0, cFlat = 0, cVar = 0;
 
-    // Contadores de cupos POR ÁREA (ADENTRO + PENDIENTES)
+////////////////// Contadores de cupos POR ÁREA (ADENTRO + PENDIENTES)
     int ocupMotos = 0, ocupEst = 0, ocupCat = 0;
 
     int pendientes = 0;   // FLAT PENDIENTES que todavía reservan espacio
     java.util.Set<String> yaAgregadas = new java.util.HashSet<>();
 
-    // ==========================
-    // 1) Vehículos ADENTRO
-    // ==========================
+ ////////////////////// 1) Vehículos ADENTRO
     for (proyectorparqueo.model.vehiculo v : proyectorparqueo.model.DatosApp.PARQUEO.getVehiculos()) {
 
         String tipoV   = safeUpper(v.getTipoVehiculo());
@@ -468,9 +453,7 @@ private void actualizarResumenPorAreasYTotales(
         else if (areaV.equals("CATEDRATICOS")) ocupCat++;
     }
 
-    // =============================================
     // 2) Vehículos FLAT PENDIENTES (salieron hace ≤2h)
-    // =============================================
     java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
 
     for (proyectorparqueo.model.ReciboSalida r : proyectorparqueo.model.DatosApp.HISTORIAL_SALIDAS) {
@@ -484,22 +467,22 @@ private void actualizarResumenPorAreasYTotales(
         String rolV    = safeUpper(v.getRol());
         String areaV   = safeUpper(v.getArea());
 
-        // Solo FLAT
+/////////// Solo FLAT
         if (!planV.contains("FLAT")) continue;
 
-        // Si ya volvió a entrar, ya no es pendiente
+//////////////// Si ya volvió a entrar, ya no es pendiente
         if (proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(v.getPlaca()) != null) {
             continue;
         }
 
-        // Si ya lo agregamos por alguna razón, saltar
+//////////////// Si ya lo agregamos por alguna razón, saltar
         if (yaAgregadas.contains(placaUp)) continue;
 
-        // ¿Sigue dentro de las 2 horas afuera?
+////////////////// ¿Sigue dentro de las 2 horas afuera?
         long minutosFuera = java.time.Duration.between(r.getHoraSalida(), ahora).toMinutes();
         if (minutosFuera > 120) continue;    // ya no debe aparecer
 
-        // Aplicar filtros
+///////////////// Aplicar filtros
         boolean okTipo = fTipo.equals("TODOS") || tipoV.equals(fTipo);
 
         boolean okPlan;
@@ -517,7 +500,7 @@ private void actualizarResumenPorAreasYTotales(
 
         if (!okTipo || !okPlan || !okRol) continue;
 
-        // Agregar fila como PENDIENTE (queda amarilla por el renderer)
+/////////////////////// Agregar fila como PENDIENTE (queda amarilla por el renderer)
         m.addRow(new Object[]{
                 v.getPlaca(),
                 v.getPropietario(),
@@ -548,7 +531,7 @@ private void actualizarResumenPorAreasYTotales(
     int totalMostrados = m.getRowCount();
     int totalLogico    = adentro + pendientes; // lo que realmente ocupa espacio (adentro + pendientes)
 
-    // --- capacidades de cada área ---
+/////////////// capacidades de cada área 
     proyectorparqueo.model.Area aM = proyectorparqueo.model.DatosApp.getAreaPorNombre("MOTOS");
     proyectorparqueo.model.Area aE = proyectorparqueo.model.DatosApp.getAreaPorNombre("ESTUDIANTES");
     proyectorparqueo.model.Area aC = proyectorparqueo.model.DatosApp.getAreaPorNombre("CATEDRATICOS");
@@ -561,9 +544,7 @@ private void actualizarResumenPorAreasYTotales(
     double pEst   = (capEst   > 0) ? 100.0 * ocupEst   / capEst   : 0;
     double pCat   = (capCat   > 0) ? 100.0 * ocupCat   / capCat   : 0;
 
-    // ==========================
     // Resumen con COLORES (HTML)
-    // ==========================
     String resumenHtml = String.format(
         "<html>" +
         "Mostrados: %d | Motos: %d | Carros: %d | Flat: %d | Variable: %d | Total lógicos: %d" +
@@ -580,8 +561,9 @@ private void actualizarResumenPorAreasYTotales(
 
     lblResumen.setText(resumenHtml);
 }
+   
     private void cargarHistorialDesdeSQL() {
-    // Limpiar la tabla
+///////////// Limpiar la tabla
     javax.swing.table.DefaultTableModel m =
         (javax.swing.table.DefaultTableModel) tblDatos.getModel();
     m.setRowCount(0);
@@ -592,7 +574,7 @@ private void actualizarResumenPorAreasYTotales(
     double totalGeneral = 0.0;
     int    contFilas    = 0;
 
-    // Pedimos TODOS los recibos de la BD
+//////////////// Pedimos TODOS los recibos de la BD
     java.util.List<proyectorparqueo.model.ReciboSalida> lista =
             proyectorparqueo.model.ReciboSalidaDAO.listarTodos();
 

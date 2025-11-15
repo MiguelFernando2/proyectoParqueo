@@ -98,12 +98,10 @@
                   <EmptySpace min="-2" pref="187" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btnReporteHistorial" pref="320" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="btnReportes" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnReingreso" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnAbrirSalida" alignment="0" max="32767" attributes="0"/>
-                          <Component id="btnAbrirIngreso" alignment="0" pref="320" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="btnReportes" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnReingreso" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnAbrirSalida" alignment="0" max="32767" attributes="0"/>
+                      <Component id="btnAbrirIngreso" alignment="0" pref="320" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>

@@ -136,8 +136,7 @@ public class FrmSalida extends javax.swing.JFrame {
             return;
     }
 
-    proyectorparqueo.model.vehiculo v =
-            proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(placa);
+    proyectorparqueo.model.vehiculo v = proyectorparqueo.model.DatosApp.PARQUEO.buscarPorPlaca(placa);
 
     if (v == null) {
         javax.swing.JOptionPane.showMessageDialog(this, "No se encontró la placa.");
@@ -161,7 +160,7 @@ public class FrmSalida extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarActionPerformed
 
     private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
-            // Limpia campos
+///////////////// Limpia campos
         txtPlaca.setText("");
         txtArea.setText("");
         // Desactiva el botón de registrar salida hasta que se haga una nueva búsqueda válida

@@ -4,9 +4,6 @@
  */
 package proyectorparqueo.model;
 
-import proyectorparqueo.model.VehiculoDAO;
-import proyectorparqueo.model.ReciboSalidaDAO;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -54,9 +51,7 @@ public class DatosApp {
         return (a.getOcupados() * 100.0) / a.getCapacidad();
     }
 
-    // =====================================================
     //  CARGAR ESTADO DESDE LA BASE DE DATOS
-    // =====================================================
     public static void cargarDesdeSQL() {
 
         // 0) Limpiar vehículos actuales del parqueo (evitar duplicados)
@@ -97,9 +92,9 @@ public class DatosApp {
         );
     }
 
-    // =====================================================
+
     //  REGISTRAR SALIDA Y CREAR RECIBO
-    // =====================================================
+
     public static ReciboSalida registrarSalida(String placa) {
         vehiculo v = PARQUEO.buscarPorPlaca(placa);
         if (v == null) return null;

@@ -34,7 +34,7 @@ public class ReciboSalidaDAO {
         "FROM ReciboSalida " +
         "WHERE horaSalida BETWEEN ? AND ?";
 
-    // ============= INSERTAR =============
+    ///////////////INSERTAR 
     public static void insertar(ReciboSalida r) {
         if (r == null || r.getVehiculo() == null) return;
 
@@ -65,7 +65,7 @@ public class ReciboSalidaDAO {
         }
     }
 
-    // ============= LISTAR TODOS (para cargar en memoria) =============
+//////////////7// LISTAR TODOS (para cargar en memoria) 
     public static List<ReciboSalida> listarTodos() {
         List<ReciboSalida> lista = new ArrayList<>();
 
@@ -87,7 +87,7 @@ public class ReciboSalidaDAO {
         return lista;
     }
 
-    // ============= LISTAR POR RANGO DE FECHAS (para reportes por periodo) =============
+//////////////////7// LISTAR POR RANGO DE FECHAS (para reportes por periodo) 
     public static List<ReciboSalida> listarPorRango(LocalDateTime desde, LocalDateTime hasta) {
         List<ReciboSalida> lista = new ArrayList<>();
         if (desde == null || hasta == null) return lista;
@@ -114,7 +114,7 @@ public class ReciboSalidaDAO {
         return lista;
     }
 
-    // ============= MAPEAR UNA FILA A ReciboSalida =============
+////////////////////7 MAPEAR UNA FILA A ReciboSalida 
     private static ReciboSalida mapearRecibo(ResultSet rs) {
         try {
             String placa       = rs.getString("placa");

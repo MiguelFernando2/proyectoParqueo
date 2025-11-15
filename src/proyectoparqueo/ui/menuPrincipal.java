@@ -204,13 +204,6 @@ public class menuPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnReportesActionPerformed
 
     private void btnCargarSQLActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargarSQLActionPerformed
-
-/*        DatosApp.cargarDesdeSQL();
-        javax.swing.JOptionPane.showMessageDialog(this,
-        "Datos cargados desde SQL correctamente.");
-    
-    // si tienes tablas en la UI, aquí llamas a los métodos que refrescan la JTable
-    // ej: actualizarTablaVehiculos();*/
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCargarSQLActionPerformed
 

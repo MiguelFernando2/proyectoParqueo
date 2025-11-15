@@ -4,11 +4,7 @@
  */
 package proyectoparqueo.ui;
 
-import proyectorparqueo.model.ReciboSalida;
-import proyectorparqueo.model.vehiculo;
 import proyectorparqueo.model.DatosApp;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import javax.swing.JOptionPane;
 import proyectorparqueo.model.VehiculoDAO;
 
@@ -132,7 +128,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         return;
     }
 
-    // 👉 Usar la última salida registrada
+//////////////////// Usar la última salida registrada
     proyectorparqueo.model.ReciboSalida r = proyectorparqueo.model.DatosApp.ultimaSalidaDe(placa);
 
     if (r == null) {
@@ -146,7 +142,7 @@ public class FrmReingreso extends javax.swing.JFrame {
     java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
     long minutos = java.time.Duration.between(r.getHoraSalida(), ahora).toMinutes();
 
-    // Normalizar plan
+/////////////////////// Normalizar plan
     String plan = (v.getTipoPlan() == null) ? "" : v.getTipoPlan().toUpperCase();
 
     boolean puedeReingresarGratis = false;
@@ -185,7 +181,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         mensaje
     ));
 
-    // Solo habilitar el botón si puede reingresar GRATIS con FLAT
+////////////////////// Solo habilitar el botón si puede reingresar GRATIS con FLAT
     btnReingresar.setEnabled(puedeReingresarGratis);
         // TODO add your handling code here:
     }//GEN-LAST:event_btnBuscarRActionPerformed
@@ -198,7 +194,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         return;
     }
 
-    // 1) Buscar la ÚLTIMA salida registrada para esa placa
+/////////////////////// 1) Buscar la ÚLTIMA salida registrada para esa placa
     proyectorparqueo.model.ReciboSalida r =
             proyectorparqueo.model.DatosApp.ultimaSalidaDe(placa);
 
@@ -220,7 +216,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         return;
     }
 
-    // 3) Validar que no hayan pasado más de 2 horas desde la SALIDA
+//////////////////////// 3) Validar que no hayan pasado más de 2 horas desde la SALIDA
     java.time.LocalDateTime horaSalida = r.getHoraSalida();
     java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
     long minutosFuera = java.time.Duration.between(horaSalida, ahora).toMinutes();
@@ -235,7 +231,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         return;
     }
 
-    // 4) Validar cupo del área donde estaba estacionado
+/////////////////////// 4) Validar cupo del área donde estaba estacionado
     proyectorparqueo.model.Area area =
             proyectorparqueo.model.DatosApp.getAreaPorNombre(v.getArea());
 
@@ -247,7 +243,7 @@ public class FrmReingreso extends javax.swing.JFrame {
         return;
     }
 
-    // 5) Crear NUEVO vehículo con nueva hora de ingreso (ahora)
+///////////////////////// 5) Crear NUEVO vehículo con nueva hora de ingreso (ahora)
     proyectorparqueo.model.vehiculo nuevo = new proyectorparqueo.model.vehiculo(
                     v.getPlaca(),
                     v.getPropietario(),
@@ -259,21 +255,21 @@ public class FrmReingreso extends javax.swing.JFrame {
                     v.getArea()
             );
     
-    //GUARDA EN MEMORIA
+/////////////////////////GUARDA EN MEMORIA
     DatosApp.PARQUEO.registrarVehiculo(nuevo);
     VehiculoDAO.insertar(nuevo); // GUARDARLO EN SQL
     JOptionPane.showMessageDialog(this, "REINGRESO REGISTRADO CORRECTAMENTE");
 
-    // 6) Registrar en el parqueo y actualizar ocupación
+////////////////////////// 6) Registrar en el parqueo y actualizar ocupación
    // proyectorparqueo.model.DatosApp.PARQUEO.registrarVehiculo(nuevo);
     if (area != null) {
         area.setOcupados(area.getOcupados() + 1);
     }
 
-    // 🔸 Importante: ya reingresó, quitarlo de PENDIENTES_FLAT
+////////////////////// Importante: ya reingresó, quitarlo de PENDIENTES_FLAT
     proyectorparqueo.model.DatosApp.PENDIENTES_FLAT.remove(nuevo.getPlaca().toUpperCase());
 
-    // 7) Mostrar en el área de texto
+///////////////////////// 7) Mostrar en el área de texto
     java.time.format.DateTimeFormatter f =
             java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 

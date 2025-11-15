@@ -13,7 +13,7 @@ import java.util.List;
 
 public class VehiculoDAO {
 
-    // ================== LISTAR TODOS ==================
+///////////////////////  LISTAR TODOS 
     public static List<vehiculo> listarTodos() {
         List<vehiculo> lista = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public class VehiculoDAO {
         return lista;
     }
 
-    // ================== CONSTANTES SQL ==================
+/////////////////////////  CONSTANTES SQL 
     private static final String SQL_INSERT =
         "INSERT INTO Vehiculo " +
         " (placa, propietario, tipoVehiculo, tipoPlan, planActivo, horaIngreso, rol, area) " +
@@ -76,7 +76,7 @@ public class VehiculoDAO {
     private static final String SQL_DELETE_POR_PLACA =
         "DELETE FROM Vehiculo WHERE placa = ?";
 
-    // ================== INSERTAR ==================
+//////////////////////  INSERTAR 
     public static void insertar(vehiculo v) {
         if (v == null) return;
 
@@ -92,7 +92,7 @@ public class VehiculoDAO {
             Timestamp ts = Timestamp.valueOf(v.getHoraIngreso());
             ps.setTimestamp(6, ts);
 
-            // --------- ROL (nunca NULL) ---------
+//////////////////////// ROL (nunca NULL) 
             String rol = v.getRol();
             if (rol == null || rol.isBlank()) {
                 rol = "ESTUDIANTE";
@@ -100,7 +100,7 @@ public class VehiculoDAO {
             rol = rol.trim().toUpperCase();
             ps.setString(7, rol);
 
-            // --------- ÁREA (nunca NULL) ---------
+///////////////////////// ÁREA (nunca NULL) 
             String area = v.getArea();
             if (area == null || area.isBlank()) {
                 if ("MOTO".equalsIgnoreCase(v.getTipoVehiculo())) {
@@ -126,7 +126,7 @@ public class VehiculoDAO {
         }
     }
 
-    // ================== ELIMINAR POR PLACA ==================
+////////////////////////    ELIMINAR POR PLACA 
     public static void eliminarPorPlaca(String placa) {
         if (placa == null || placa.isBlank()) return;
 
